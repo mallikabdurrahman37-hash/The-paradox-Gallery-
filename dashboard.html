@@ -51,6 +51,44 @@
       });
   </script>
 
+    <style>
+      /* Premium Delete Trash Button Styling for Dashboard */
+      .my-artwork-item {
+          position: relative; 
+      }
+      .my-artwork-delete-btn {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: rgba(249, 248, 245, 0.95);
+          border: 1px solid rgba(26, 26, 26, 0.1);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10;
+          transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      }
+      .my-artwork-delete-btn:hover {
+          background: #C62828;
+          border-color: #C62828;
+          transform: scale(1.05);
+      }
+      .my-artwork-delete-btn svg {
+          width: 16px;
+          height: 16px;
+          fill: #1A1A1A;
+          transition: fill 0.2s ease;
+      }
+      .my-artwork-delete-btn:hover svg {
+          fill: #F9F8F5;
+      }
+  </style>
+
   
 
   <!-- =============================================
@@ -499,14 +537,17 @@
           const item = document.createElement('div');
           item.className = 'my-artwork-item';
           item.style.animationDelay = `${i * 0.06}s`;
-          item.innerHTML = `
+                              item.innerHTML = `
             <img src="${artwork.imageUrl}" alt="${escapeHtml(artwork.title)}" loading="lazy" />
             <div class="my-artwork-overlay">
               <p class="my-artwork-title">${escapeHtml(artwork.title)}</p>
               <span class="my-artwork-likes">♡ ${artwork.likesCount || 0} likes</span>
             </div>
-            <button class="my-artwork-delete" title="Delete" data-artwork-id="${artwork.id}">×</button>
+            <button class="my-artwork-delete-btn" title="Delete Artwork" data-artwork-id="${artwork.id}">
+                <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            </button>
           `;
+
 
           // Delete handler
           item.querySelector('.my-artwork-delete').addEventListener('click', async (e) => {
