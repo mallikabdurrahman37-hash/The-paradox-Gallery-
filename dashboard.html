@@ -549,9 +549,10 @@
           `;
 
 
-          // Delete handler
-          item.querySelector('.my-artwork-delete').addEventListener('click', async (e) => {
+                    // Delete handler
+          item.querySelector('.my-artwork-delete-btn').addEventListener('click', async (e) => {
             e.stopPropagation();
+
             if (!confirm(`Delete "${artwork.title}"? This cannot be undone.`)) return;
 
             try {
