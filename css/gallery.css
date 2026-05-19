@@ -646,3 +646,91 @@
     grid-template-columns: 1fr;
   }
 }
+/* ----------------------------------------------------------
+   CJP HERO BANNER (Between Manifesto and Gallery)
+   ---------------------------------------------------------- */
+.cjp-banner-section {
+  padding: 2.5rem 0 1rem; /* Upar manifesto se thodi duri */
+}
+
+.cjp-hero-banner {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  /* Yahan image set hai, agar cjp.png choti ho to us hisaab se adjust karega */
+  background: url('../assets/cjp.png') center/cover no-repeat;
+  background-color: var(--ink); 
+  min-height: 420px;
+  display: flex;
+  align-items: flex-end;
+  box-shadow: var(--shadow-lift);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Premium Dark Gradient Overlay from bottom */
+.cjp-banner-overlay {
+  width: 100%;
+  background: linear-gradient(to top, rgba(26, 26, 26, 0.95) 0%, rgba(26, 26, 26, 0.5) 50%, transparent 100%);
+  padding: 3rem 2.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.cjp-banner-text {
+  max-width: 650px;
+}
+
+.cjp-banner-text h4 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: #F9F8F5; 
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.5px;
+}
+
+.cjp-banner-text p {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: rgba(249, 248, 245, 0.85);
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+.cjp-banner-btn {
+  background: #C84B31; /* CJP Official Orange */
+  color: #F9F8F5;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 1.1rem 2.2rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: all 0.3s var(--ease-luxury);
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(200, 75, 49, 0.2);
+}
+
+.cjp-banner-btn:hover {
+  background: #F9F8F5;
+  color: #C84B31;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(200, 75, 49, 0.35);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .cjp-hero-banner {
+    min-height: 320px;
+  }
+  .cjp-banner-overlay {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+  }
+}
