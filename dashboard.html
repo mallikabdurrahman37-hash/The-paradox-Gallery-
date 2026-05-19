@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    // Yeh code chhupaye gaye errors ko force karke screen par Alert pop-up banayega
+    const originalConsoleError = console.error;
+    console.error = function(...args) {
+        let errorMsg = args.map(arg => {
+            if (arg instanceof Error) return arg.message;
+            if (typeof arg === 'object') return JSON.stringify(arg);
+            return String(arg);
+        }).join(' | ');
+        
+        alert("🚨 HIDDEN ERROR PAKDA GAYA: \n\n" + errorMsg);
+        
+        originalConsoleError.apply(console, args);
+    };
+  </script>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="The Studio — Your private upload workspace on The Paradox Gallery." />
