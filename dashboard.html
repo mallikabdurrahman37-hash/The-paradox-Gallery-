@@ -8,6 +8,25 @@
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/admin.css" />
+  <div id="debug-error-console" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 99999; pointer-events: none;"></div>
+<script>
+    window.addEventListener('error', function(e) {
+        const consoleDiv = document.getElementById('debug-error-console');
+        const errorBox = document.createElement('div');
+        errorBox.style.cssText = "background: #C62828; color: #fff; padding: 15px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #1A1A1A; pointer-events: auto; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-break: break-all;";
+        errorBox.innerHTML = `<strong>🚨 Error Caught:</strong> ${e.message} <br><small style="opacity:0.7;">at ${e.filename}:${e.lineno}</small>`;
+        consoleDiv.appendChild(errorBox);
+    });
+
+    window.addEventListener('unhandledrejection', function(e) {
+        const consoleDiv = document.getElementById('debug-error-console');
+        const errorBox = document.createElement('div');
+        errorBox.style.cssText = "background: #E65100; color: #fff; padding: 15px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #1A1A1A; pointer-events: auto; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-break: break-all;";
+        errorBox.innerHTML = `<strong>🔥 Firebase/Promise Error:</strong> ${e.reason.message || e.reason}`;
+        consoleDiv.appendChild(errorBox);
+    });
+</script>
+  
 </head>
 <body>
 
