@@ -8,32 +8,38 @@
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/admin.css" />
-<script>
-    window.addEventListener('error', function(e) {
-        const consoleDiv = document.getElementById('debug-error-console');
-        if(consoleDiv) {
-            const errorBox = document.createElement('div');
-            errorBox.style.cssText = "background: #C62828; color: #fff; padding: 15px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #1A1A1A; pointer-events: auto; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-break: break-all;";
-            errorBox.innerHTML = `<strong>🚨 Error Caught:</strong> ${e.message} <br><small style="opacity:0.7;">at ${e.filename}:${e.lineno}</small>`;
-            consoleDiv.appendChild(errorBox);
-        }
-    });
-
-    window.addEventListener('unhandledrejection', function(e) {
-        const consoleDiv = document.getElementById('debug-error-console');
-        if(consoleDiv) {
-            const errorBox = document.createElement('div');
-            errorBox.style.cssText = "background: #E65100; color: #fff; padding: 15px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #1A1A1A; pointer-events: auto; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-break: break-all;";
-            errorBox.innerHTML = `<strong>🔥 Firebase/Promise Error:</strong> ${e.reason.message || e.reason}`;
-            consoleDiv.appendChild(errorBox);
-        }
-    });
-</script>
-
 </head>
 <body>
-  <div id="debug-error-console" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 99999; pointer-events: none;"></div>
 
+  <div id="debug-error-console" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 99999; pointer-events: none;"></div>
+  <script>
+      window.addEventListener('error', function(e) {
+          const consoleDiv = document.getElementById('debug-error-console');
+          if(consoleDiv) {
+              const errorBox = document.createElement('div');
+              errorBox.style.cssText = "background: #C62828; color: #fff; padding: 15px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #1A1A1A; pointer-events: auto; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-break: break-all;";
+              errorBox.innerHTML = `<strong>🚨 JS Error:</strong> ${e.message} <br><small style="opacity:0.7;">at ${e.filename}:${e.lineno}</small>`;
+              consoleDiv.appendChild(errorBox);
+          }
+      });
+
+      window.addEventListener('unhandledrejection', function(e) {
+          const consoleDiv = document.getElementById('debug-error-console');
+          if(consoleDiv) {
+              const errorBox = document.createElement('div');
+              errorBox.style.cssText = "background: #E65100; color: #fff; padding: 15px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #1A1A1A; pointer-events: auto; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-break: break-all;";
+              const errorMsg = e.reason && e.reason.message ? e.reason.message : e.reason;
+              errorBox.innerHTML = `<strong>🔥 Firebase Error:</strong> ${errorMsg}`;
+              consoleDiv.appendChild(errorBox);
+          }
+      });
+  </script>
+
+  
+
+  <!-- =============================================
+       NAVIGATION BAR
+       ============================================= -->
   <nav id="navbar" class="anim-nav-init">
     <div class="nav-brand">
       <img src="assets/logo.png" alt="The Paradox Gallery" class="logo" onerror="this.style.display='none'" />
@@ -59,6 +65,7 @@
     </button>
   </nav>
 
+  <!-- Mobile Drawer -->
   <div id="mobile-drawer">
     <div class="drawer-header">
       <span class="nav-brand-text" style="font-family: var(--font-serif);">The Paradox Gallery</span>
@@ -76,18 +83,25 @@
   </div>
   <div id="drawer-overlay"></div>
 
+  <!-- =============================================
+       DASHBOARD CONTENT
+       ============================================= -->
   <div class="page-wrapper dashboard-page">
     <div class="container">
 
+      <!-- Page Heading -->
       <div class="anim-hero" style="margin-bottom: 2rem;">
         <span class="text-muted">The Studio</span>
         <h1 style="font-size: clamp(1.8rem, 4vw, 2.8rem); margin-top: 0.4rem;">Your Creative Workspace</h1>
       </div>
 
+      <!-- Dashboard Layout Grid -->
       <div class="dashboard-layout anim-content">
 
+        <!-- SIDEBAR -->
         <aside class="dashboard-sidebar">
 
+          <!-- Profile Card -->
           <div class="sidebar-profile-card">
             <div class="sidebar-avatar" id="sidebar-avatar">
               ?
@@ -106,6 +120,7 @@
             </div>
           </div>
 
+          <!-- Sidebar Nav -->
           <nav class="sidebar-nav">
             <a href="dashboard.html" class="sidebar-nav-link active">Upload Work</a>
             <a href="settings.html" class="sidebar-nav-link">Profile Settings</a>
@@ -115,14 +130,17 @@
 
         </aside>
 
+        <!-- MAIN CONTENT -->
         <main class="dashboard-main">
 
+          <!-- UPLOAD CARD -->
           <div class="upload-card">
             <div class="upload-card-header">
               <h2>Upload Artwork</h2>
               <p>Share your creation with The Paradox Gallery community.</p>
             </div>
 
+            <!-- File Drop Zone -->
             <div class="file-drop-zone" id="file-drop-zone">
               <input
                 type="file"
@@ -139,6 +157,7 @@
               </div>
             </div>
 
+            <!-- Upload Form -->
             <form class="upload-form" id="upload-form" novalidate>
 
               <div class="form-group-upload">
@@ -161,6 +180,7 @@
                 ></textarea>
               </div>
 
+              <!-- Upload Progress -->
               <div class="upload-progress-wrapper" id="upload-progress-wrapper">
                 <div class="upload-progress-bar">
                   <div class="upload-progress-fill" id="upload-progress-fill"></div>
@@ -176,6 +196,7 @@
 
           </div>
 
+          <!-- MY ARTWORKS -->
           <div class="my-artworks-card">
             <h3>My Artworks</h3>
             <div class="my-artworks-grid" id="my-artworks-grid">
@@ -191,11 +212,17 @@
     </div>
   </div>
 
+  <!-- =============================================
+       FOOTER
+       ============================================= -->
   <footer class="site-footer">
     <p>© 2025 The Paradox Gallery.</p>
     <p>Where Cringe Becomes Art.</p>
   </footer>
 
+  <!-- =============================================
+       SCRIPTS
+       ============================================= -->
   <script src="js/ui.js" type="module"></script>
   <script src="js/auth.js" type="module"></script>
   <script src="js/database.js" type="module"></script>
@@ -506,7 +533,7 @@
         .replace(/'/g, '&#39;');
     }
 
-  // ------------------------------------------
+    // ------------------------------------------
     // INIT
     // ------------------------------------------
     document.addEventListener('DOMContentLoaded', () => {
@@ -532,4 +559,5 @@
   </script>
 
 </body>
-</html>
+  </html>
+  
