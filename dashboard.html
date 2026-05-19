@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Studio — Your private upload workspace on The Paradox Gallery." />
+  <title>The Studio — The Paradox Gallery</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+<script>
+    window.addEventListener('error', function(e) {
+        const consoleDiv = document.getElementById('debug-error-console');
+        if(consoleDiv) {
+            const errorBox = document.createElement('div');
+            errorBox.style.cssText = "background: #C62828; color: #fff; padding: 15px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #1A1A1A; pointer-events: auto; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-break: break-all;";
+            errorBox.innerHTML = `<strong>🚨 Error Caught:</strong> ${e.message} <br><small style="opacity:0.7;">at ${e.filename}:${e.lineno}</small>`;
+            consoleDiv.appendChild(errorBox);
+        }
+    });
+
+    window.addEventListener('unhandledrejection', function(e) {
+        const consoleDiv = document.getElementById('debug-error-console');
+        if(consoleDiv) {
+            const errorBox = document.createElement('div');
+            errorBox.style.cssText = "background: #E65100; color: #fff; padding: 15px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #1A1A1A; pointer-events: auto; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-break: break-all;";
+            errorBox.innerHTML = `<strong>🔥 Firebase/Promise Error:</strong> ${e.reason.message || e.reason}`;
+            consoleDiv.appendChild(errorBox);
+        }
+    });
+</script>
+
+</head>
+<body>
+  <div id="debug-error-console" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 99999; pointer-events: none;"></div>
+
+  <nav id="navbar" class="anim-nav-init">
+    <div class="nav-brand">
+      <img src="assets/logo.png" alt="The Paradox Gallery" class="logo" onerror="this.style.display='none'" />
+      <div>
+        <span class="nav-brand-text">The Paradox Gallery</span>
+        <span class="nav-brand-tagline">Where Cringe Becomes Art</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Exhibition</a></li>
+      <li><a href="creators.html">Creators</a></li>
+      <li><a href="dashboard.html" class="active">Studio</a></li>
+    </ul>
+
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <a href="settings.html" class="nav-cta desktop-only" style="background: transparent; color: var(--ink);">Settings</a>
+      <button class="nav-cta desktop-only" data-action="logout" style="cursor: pointer; border: none; background: var(--ink); color: var(--canvas);">Sign Out</button>
+    </div>
+
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Open menu">
+      <img src="assets/icon-menu.png" alt="Menu" onerror="this.parentElement.innerHTML='☰'" />
+    </button>
+  </nav>
+
+  <div id="mobile-drawer">
+    <div class="drawer-header">
+      <span class="nav-brand-text" style="font-family: var(--font-serif);">The Paradox Gallery</span>
+      <button class="drawer-close-btn" id="drawer-close" aria-label="Close">
+        <img src="assets/icon-close.png" alt="Close" onerror="this.parentElement.textContent='×'" />
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="index.html">Exhibition</a>
+      <a href="creators.html">Creators</a>
+      <a href="dashboard.html">Studio</a>
+      <a href="settings.html">Settings</a>
+      <a href="#" data-action="logout">Sign Out</a>
+    </nav>
+  </div>
+  <div id="drawer-overlay"></div>
+
+  <div class="page-wrapper dashboard-page">
+    <div class="container">
+
+      <div class="anim-hero" style="margin-bottom: 2rem;">
+        <span class="text-muted">The Studio</span>
+        <h1 style="font-size: clamp(1.8rem, 4vw, 2.8rem); margin-top: 0.4rem;">Your Creative Workspace</h1>
+      </div>
+
+      <div class="dashboard-layout anim-content">
+
+        <aside class="dashboard-sidebar">
+
+          <div class="sidebar-profile-card">
+            <div class="sidebar-avatar" id="sidebar-avatar">
+              ?
+            </div>
+            <p class="sidebar-name" id="sidebar-name">Loading…</p>
+            <p class="sidebar-username" id="sidebar-username">@—</p>
+            <div class="sidebar-stats">
+              <div class="sidebar-stat">
+                <span class="sidebar-stat-value" id="sidebar-artwork-count">0</span>
+                <span class="sidebar-stat-label">Works</span>
+              </div>
+              <div class="sidebar-stat">
+                <span class="sidebar-stat-value" id="sidebar-likes-count">0</span>
+                <span class="sidebar-stat-label">Likes</span>
+              </div>
+            </div>
+          </div>
+
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" class="sidebar-nav-link active">Upload Work</a>
+            <a href="settings.html" class="sidebar-nav-link">Profile Settings</a>
+            <a href="index.html" class="sidebar-nav-link">View Exhibition</a>
+            <button class="sidebar-nav-link" data-action="logout">Sign Out</button>
+          </nav>
+
+        </aside>
+
+        <main class="dashboard-main">
+
+          <div class="upload-card">
+            <div class="upload-card-header">
+              <h2>Upload Artwork</h2>
+              <p>Share your creation with The Paradox Gallery community.</p>
+            </div>
+
+            <div class="file-drop-zone" id="file-drop-zone">
+              <input
+                type="file"
+                class="file-drop-input"
+                id="file-input"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+              />
+              <div class="file-drop-content" id="file-drop-content">
+                <div class="file-drop-icon">
+                  <img src="assets/icon-download.png" alt="Upload" onerror="this.parentElement.innerHTML='↑'" />
+                </div>
+                <p class="file-drop-title">Drop your artwork here</p>
+                <p class="file-drop-sub">or click to browse — JPEG, PNG, WebP, GIF · Max 10MB</p>
+              </div>
+            </div>
+
+            <form class="upload-form" id="upload-form" novalidate>
+
+              <div class="form-group-upload">
+                <label for="artwork-title">Artwork Title</label>
+                <input
+                  type="text"
+                  id="artwork-title"
+                  placeholder="Give your work a title"
+                  required
+                  maxlength="120"
+                />
+              </div>
+
+              <div class="form-group-upload">
+                <label for="artwork-description">Artist Statement / Description</label>
+                <textarea
+                  id="artwork-description"
+                  placeholder="What inspired this? What does it mean? (Optional)"
+                  maxlength="1000"
+                ></textarea>
+              </div>
+
+              <div class="upload-progress-wrapper" id="upload-progress-wrapper">
+                <div class="upload-progress-bar">
+                  <div class="upload-progress-fill" id="upload-progress-fill"></div>
+                </div>
+                <p class="upload-progress-text" id="upload-progress-text">Preparing upload…</p>
+              </div>
+
+              <button type="submit" class="btn-primary upload-submit-btn" id="upload-submit-btn" disabled>
+                Upload to Gallery
+              </button>
+
+            </form>
+
+          </div>
+
+          <div class="my-artworks-card">
+            <h3>My Artworks</h3>
+            <div class="my-artworks-grid" id="my-artworks-grid">
+              <div class="dashboard-empty">
+                <h4>No works yet</h4>
+                <p>Upload your first piece above.</p>
+              </div>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2025 The Paradox Gallery.</p>
+    <p>Where Cringe Becomes Art.</p>
+  </footer>
+
+  <script src="js/ui.js" type="module"></script>
+  <script src="js/auth.js" type="module"></script>
+  <script src="js/database.js" type="module"></script>
+
+  <script type="module">
+
+    // ------------------------------------------
+    // STATE
+    // ------------------------------------------
+    let selectedFile = null;
+    let myArtworks = [];
+
+    // ------------------------------------------
+    // WAIT FOR MODULES
+    // ------------------------------------------
+    function waitFor(getter, callback, attempts = 0) {
+      if (getter()) callback();
+      else if (attempts < 40) setTimeout(() => waitFor(getter, callback, attempts + 1), 100);
+    }
+
+    // ------------------------------------------
+    // POPULATE SIDEBAR
+    // ------------------------------------------
+    function populateSidebar(userData, artworks) {
+      const initials = (userData.name || '?')
+        .split(' ')
+        .slice(0, 2)
+        .map(n => n[0] || '')
+        .join('')
+        .toUpperCase();
+
+      const avatarEl = document.getElementById('sidebar-avatar');
+      const nameEl = document.getElementById('sidebar-name');
+      const usernameEl = document.getElementById('sidebar-username');
+      const artworkCountEl = document.getElementById('sidebar-artwork-count');
+      const likesCountEl = document.getElementById('sidebar-likes-count');
+
+      if (avatarEl) avatarEl.textContent = initials;
+      if (nameEl) nameEl.textContent = userData.name || 'Creator';
+      if (usernameEl) usernameEl.textContent = `@${userData.username || '—'}`;
+
+      const totalLikes = artworks.reduce((sum, a) => sum + (a.likesCount || 0), 0);
+      if (artworkCountEl) artworkCountEl.textContent = artworks.length;
+      if (likesCountEl) likesCountEl.textContent = totalLikes;
+    }
+
+    // ------------------------------------------
+    // FILE DROP ZONE SETUP
+    // ------------------------------------------
+    function initFileDrop() {
+      const dropZone = document.getElementById('file-drop-zone');
+      const fileInput = document.getElementById('file-input');
+      const submitBtn = document.getElementById('upload-submit-btn');
+
+      if (!dropZone || !fileInput) return;
+
+      // Drag & Drop events
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+      });
+
+      dropZone.addEventListener('dragleave', (e) => {
+        if (!dropZone.contains(e.relatedTarget)) {
+          dropZone.classList.remove('drag-over');
+        }
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const file = e.dataTransfer?.files?.[0];
+        if (file) handleFileSelect(file);
+      });
+
+      // File input change
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files?.[0]) {
+          handleFileSelect(fileInput.files[0]);
+        }
+      });
+    }
+
+    function handleFileSelect(file) {
+      // Validate file type
+      const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      if (!allowed.includes(file.type)) {
+        window.UI?.showToast('Please select a JPEG, PNG, WebP, or GIF image.', 'error');
+        return;
+      }
+
+      // Validate file size (10MB max)
+      if (file.size > 10 * 1024 * 1024) {
+        window.UI?.showToast('File too large. Maximum size is 10MB.', 'error');
+        return;
+      }
+
+      selectedFile = file;
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = (e) => showFilePreview(e.target.result);
+      reader.readAsDataURL(file);
+
+      // Enable submit button
+      document.getElementById('upload-submit-btn').disabled = false;
+    }
+
+    function showFilePreview(dataUrl) {
+      const dropZone = document.getElementById('file-drop-zone');
+      const dropContent = document.getElementById('file-drop-content');
+      const fileInput = document.getElementById('file-input');
+
+      dropZone.classList.add('has-preview');
+
+      // Remove hidden input from DOM temporarily to prevent click
+      if (fileInput) fileInput.style.display = 'none';
+
+      // Remove old preview if exists
+      const oldPreview = dropZone.querySelector('.file-preview-container');
+      if (oldPreview) oldPreview.remove();
+
+      const previewContainer = document.createElement('div');
+      previewContainer.className = 'file-preview-container';
+      previewContainer.innerHTML = `
+        <img src="${dataUrl}" alt="Preview" class="file-preview-img" />
+        <button type="button" class="file-preview-remove" id="preview-remove-btn" title="Remove">×</button>
+      `;
+
+      dropContent.style.display = 'none';
+      dropZone.appendChild(previewContainer);
+
+      document.getElementById('preview-remove-btn').addEventListener('click', clearFileSelection);
+    }
+
+    function clearFileSelection() {
+      selectedFile = null;
+
+      const dropZone = document.getElementById('file-drop-zone');
+      const dropContent = document.getElementById('file-drop-content');
+      const fileInput = document.getElementById('file-input');
+      const previewContainer = dropZone.querySelector('.file-preview-container');
+
+      dropZone.classList.remove('has-preview');
+      if (previewContainer) previewContainer.remove();
+      if (dropContent) dropContent.style.display = '';
+      if (fileInput) {
+        fileInput.style.display = '';
+        fileInput.value = '';
+      }
+
+      document.getElementById('upload-submit-btn').disabled = true;
+    }
+
+    // ------------------------------------------
+    // UPLOAD FORM SUBMIT
+    // ------------------------------------------
+    function initUploadForm() {
+      const form = document.getElementById('upload-form');
+      if (!form) return;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!selectedFile) {
+          window.UI?.showToast('Please select an image to upload.', 'error');
+          return;
+        }
+
+        const title = document.getElementById('artwork-title').value.trim();
+        if (!title) {
+          window.UI?.showToast('Please give your artwork a title.', 'error');
+          document.getElementById('artwork-title').focus();
+          return;
+        }
+
+        const description = document.getElementById('artwork-description').value.trim();
+        const submitBtn = document.getElementById('upload-submit-btn');
+        const progressWrapper = document.getElementById('upload-progress-wrapper');
+        const progressFill = document.getElementById('upload-progress-fill');
+        const progressText = document.getElementById('upload-progress-text');
+
+        // Show progress
+        progressWrapper.classList.add('visible');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner"></span> Uploading…';
+        progressText.textContent = 'Connecting to Cloudinary…';
+        progressFill.style.width = '5%';
+
+        try {
+          const onProgress = (percent) => {
+            progressFill.style.width = `${Math.min(percent, 95)}%`;
+            progressText.textContent = `Uploading… ${percent}%`;
+          };
+
+          const result = await window.DB?.publishArtwork({
+            file: selectedFile,
+            title,
+            description,
+            onProgress,
+          });
+
+          progressFill.style.width = '100%';
+          progressText.textContent = 'Published to the gallery!';
+
+          window.UI?.showToast('Artwork published successfully!', 'success');
+
+          // Reset form
+          setTimeout(() => {
+            form.reset();
+            clearFileSelection();
+            progressWrapper.classList.remove('visible');
+            progressFill.style.width = '0%';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Upload to Gallery';
+
+            // Reload artworks list
+            loadMyArtworks();
+          }, 1500);
+
+        } catch (err) {
+          console.error('Upload error:', err);
+          progressWrapper.classList.remove('visible');
+          progressFill.style.width = '0%';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Upload to Gallery';
+          window.UI?.showToast(err.message || 'Upload failed. Please try again.', 'error');
+        }
+      });
+    }
+
+    // ------------------------------------------
+    // LOAD MY ARTWORKS
+    // ------------------------------------------
+    async function loadMyArtworks() {
+      const grid = document.getElementById('my-artworks-grid');
+      if (!grid || !window.currentUser) return;
+
+      try {
+        const artworks = await window.DB?.fetchArtworksByArtist(window.currentUser.uid) || [];
+        myArtworks = artworks;
+
+        // Update sidebar stats
+        populateSidebar(window.currentUser, artworks);
+
+        if (!artworks.length) {
+          grid.innerHTML = `
+            <div class="dashboard-empty">
+              <h4>No works yet</h4>
+              <p>Upload your first piece above.</p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = '';
+        artworks.forEach((artwork, i) => {
+          const item = document.createElement('div');
+          item.className = 'my-artwork-item';
+          item.style.animationDelay = `${i * 0.06}s`;
+          item.innerHTML = `
+            <img src="${artwork.imageUrl}" alt="${escapeHtml(artwork.title)}" loading="lazy" />
+            <div class="my-artwork-overlay">
+              <p class="my-artwork-title">${escapeHtml(artwork.title)}</p>
+              <span class="my-artwork-likes">♡ ${artwork.likesCount || 0} likes</span>
+            </div>
+            <button class="my-artwork-delete" title="Delete" data-artwork-id="${artwork.id}">×</button>
+          `;
+
+          // Delete handler
+          item.querySelector('.my-artwork-delete').addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!confirm(`Delete "${artwork.title}"? This cannot be undone.`)) return;
+
+            try {
+              await window.DB?.deleteArtwork(artwork.id);
+              item.remove();
+              window.UI?.showToast('Artwork deleted.', 'success');
+              // Update counts
+              myArtworks = myArtworks.filter(a => a.id !== artwork.id);
+              populateSidebar(window.currentUser, myArtworks);
+            } catch (err) {
+              window.UI?.showToast('Could not delete artwork. ' + err.message, 'error');
+            }
+          });
+
+          grid.appendChild(item);
+        });
+
+      } catch (err) {
+        console.error('Error loading artworks:', err);
+        grid.innerHTML = `
+          <div class="dashboard-empty">
+            <h4>Failed to load artworks</h4>
+            <p>Please refresh.</p>
+          </div>
+        `;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+  // ------------------------------------------
+    // INIT
+    // ------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      initFileDrop();
+      initUploadForm();
+
+      // Load data once user is confirmed
+      function pollForUser(attempts = 0) {
+        if (window.currentUser && window.DB) {
+          // Populate sidebar with cached user
+          populateSidebar(window.currentUser, []);
+          document.getElementById('sidebar-name').textContent = window.currentUser.name || 'Creator';
+          document.getElementById('sidebar-username').textContent = `@${window.currentUser.username || '—'}`;
+          const initials = (window.currentUser.name || '?').split(' ').slice(0,2).map(n => n[0] || '').join('').toUpperCase();
+          document.getElementById('sidebar-avatar').textContent = initials;
+          loadMyArtworks();
+        } else if (attempts < 50) {
+          setTimeout(() => pollForUser(attempts + 1), 100);
+        }
+      }
+      pollForUser();
+    });
+  </script>
+
+</body>
+</html>
