@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="The Vision and The Collective behind The Paradox Gallery." />
+    <title>The Vision — The Paradox Gallery</title>
+    
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    
+    <link rel="stylesheet" href="css/global.css" />
+
+    <style>
+        /* ----------------------------------------------------------
+           EDITORIAL TYPOGRAPHY & ANIMATIONS
+           ---------------------------------------------------------- */
+        .about-page-wrapper {
+            padding-top: calc(var(--nav-height) + 4rem);
+            padding-bottom: 6rem;
+            overflow: hidden;
+        }
+
+        .editorial-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 5rem;
+            padding: 0 1.5rem;
+        }
+
+        .editorial-eyebrow {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .editorial-title {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            color: var(--ink);
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+        }
+
+        .editorial-lead {
+            font-family: var(--font-serif);
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-style: italic;
+            color: var(--ink-light);
+            line-height: 1.6;
+        }
+
+        /* ----------------------------------------------------------
+           THE MANIFESTO SECTION
+           ---------------------------------------------------------- */
+        .manifesto-container {
+            max-width: 900px;
+            margin: 0 auto 8rem;
+            padding: 0 1.5rem;
+        }
+
+        .manifesto-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s var(--ease-luxury), transform 0.8s var(--ease-luxury);
+        }
+
+        .manifesto-point.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .manifesto-point:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .manifesto-number {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 400;
+            color: var(--ink);
+            line-height: 0.8;
+            opacity: 0.2;
+        }
+
+        .manifesto-content h3 {
+            font-family: var(--font-serif);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .manifesto-content p {
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            color: var(--ink-light);
+            line-height: 1.8;
+            letter-spacing: 0.3px;
+        }
+
+        /* ----------------------------------------------------------
+           THE COLLECTIVE (TEAM) SECTION
+           ---------------------------------------------------------- */
+        .collective-section {
+            background: rgba(255, 255, 255, 0.3);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            padding: 6rem 0;
+        }
+
+        .collective-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .collective-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .profile-card {
+            background: var(--canvas);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.03);
+            transition: transform 0.4s var(--ease-luxury), box-shadow 0.4s var(--ease-luxury);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--ease-luxury), transform 0.8s var(--ease-luxury);
+        }
+
+        .profile-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lift);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #1A1A1A;
+            color: #F9F8F5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-role {
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .profile-name {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--ink);
+        }
+
+        .profile-bio {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: var(--ink-light);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .manifesto-point {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .manifesto-number {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar" class="anim-nav-init">
+      <div class="nav-brand">
+        <img src="assets/logo.png" alt="The Paradox Gallery" class="logo" onerror="this.style.display='none'" />
+        <div>
+          <span class="nav-brand-text">The Paradox Gallery</span>
+          <span class="nav-brand-tagline">Where Cringe Becomes Art</span>
+        </div>
+      </div>
+  
+      <ul class="nav-links">
+        <li><a href="index.html">Exhibition</a></li>
+        <li><a href="creators.html">Creators</a></li>
+        <li><a href="about.html" class="active">The Vision</a></li>
+      </ul>
+  
+      <a href="dashboard.html" class="nav-cta desktop-only" id="nav-cta">Studio</a>
+      <button class="nav-menu-btn" id="menu-btn" aria-label="Open menu">
+        <img src="assets/icon-menu.png" alt="Menu" onerror="this.parentElement.innerHTML='☰'" />
+      </button>
+    </nav>
+  
+    <div id="mobile-drawer">
+      <div class="drawer-header">
+        <span class="nav-brand-text" style="font-family: var(--font-serif);">The Paradox Gallery</span>
+        <button class="drawer-close-btn" id="drawer-close" aria-label="Close menu">
+          <img src="assets/icon-close.png" alt="Close" onerror="this.parentElement.textContent='×'" />
+        </button>
+      </div>
+      <nav class="drawer-nav">
+        <a href="index.html">Exhibition</a>
+        <a href="creators.html">Creators</a>
+        <a href="about.html">The Vision</a>
+        <a href="dashboard.html">Studio</a>
+      </nav>
+    </div>
+    <div id="drawer-overlay"></div>
+
+    <main class="about-page-wrapper">
+        
+        <header class="editorial-header anim-init">
+            <span class="editorial-eyebrow">Our Philosophy</span>
+            <h1 class="editorial-title">Defining the Undefined.</h1>
+            <p class="editorial-lead">
+                We believe that art is not bound by absolute perfection. It is found in the raw, the awkward, and the unapologetic expression of the human mind.
+            </p>
+        </header>
+
+        <section class="manifesto-container">
+            
+            <div class="manifesto-point scroll-reveal">
+                <span class="manifesto-number">01</span>
+                <div class="manifesto-content">
+                    <h3>The Subjectivity of Cringe</h3>
+                    <p>What one considers uncomfortable, another views as a masterpiece. The Paradox Gallery was established to bridge this psychological gap. We do not curate based on traditional standards of beauty; we curate based on emotion, audacity, and the courage it takes to display the unfiltered self.</p>
+                </div>
+            </div>
+
+            <div class="manifesto-point scroll-reveal">
+                <span class="manifesto-number">02</span>
+                <div class="manifesto-content">
+                    <h3>Raw Over Refined</h3>
+                    <p>We celebrate the aggressive stroke of a graphite pencil and the chaotic assembly of digital pixels over soulless, polished perfection. The glitches, the rough edges, and the anatomical impossibilities are not errors—they are the authentic signatures of the creator's mind.</p>
+                </div>
+            </div>
+
+            <div class="manifesto-point scroll-reveal">
+                <span class="manifesto-number">03</span>
+                <div class="manifesto-content">
+                    <h3>The Silent Rebellion</h3>
+                    <p>Every artwork uploaded to this sanctuary is a defiant act against the mundane. We provide a blank canvas for the outcasts, the overthinkers, and the visionaries who refuse to be categorized. Here, your art doesn't need to make sense; it only needs to be yours.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="collective-section">
+            <div class="collective-header scroll-reveal">
+                <span class="editorial-eyebrow">The Collective</span>
+                <h2 class="editorial-title" style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0;">The Minds Behind The Museum</h2>
+            </div>
+
+            <div class="collective-grid">
+                
+                <article class="profile-card scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="profile-avatar">A</div>
+                    <span class="profile-role">The Architect</span>
+                    <h3 class="profile-name">Abdur Rahman Mallik</h3>
+                    <p class="profile-bio">
+                        The engineering mind and full-stack visionary behind The Paradox Gallery. Abdur constructed this digital sanctuary from the ground up, merging high-end editorial aesthetics with complex database architecture to give raw art the premium pedestal it deserves.
+                    </p>
+                </article>
+
+                <article class="profile-card scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="profile-avatar">E</div>
+                    <span class="profile-role">Featured Artist</span>
+                    <h3 class="profile-name">Erfan</h3>
+                    <p class="profile-bio">
+                        The creative catalyst whose profound, evocative sketches laid the artistic foundation of this gallery. Erfan’s mastery over raw line-art, deep shading, and emotional storytelling defines the exact paradox of vulnerability and strength that this museum represents.
+                    </p>
+                </article>
+
+                <article class="profile-card scroll-reveal" style="transition-delay: 0.3s;">
+                    <div class="profile-avatar">Y</div>
+                    <span class="profile-role">The Co-Visionary</span>
+                    <h3 class="profile-name">Yousuf</h3>
+                    <p class="profile-bio">
+                        The strategic collaborator and creative sounding board. Yousuf's critical insights into user experience and conceptual logic helped shape the underlying philosophy of the gallery, ensuring the platform remains true to its core rebellious identity.
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2025 The Paradox Gallery. All rights reserved.</p>
+      <p>Where Cringe Becomes Art.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initial Entrance Animation
+            setTimeout(() => {
+                const header = document.querySelector('.editorial-header');
+                const nav = document.getElementById('navbar');
+                if (header) header.classList.add('anim-ready');
+                if (nav) nav.classList.add('anim-nav-ready');
+            }, 100);
+
+            // 2. Scroll Reveal Animation for Manifesto and Cards
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // Trigger when 15% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Animate only once
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.scroll-reveal');
+            revealElements.forEach(el => observer.observe(el));
+
+            // 3. Mobile Navigation Menu Toggle Logic
+            const menuBtn = document.getElementById('menu-btn');
+            const closeBtn = document.getElementById('drawer-close');
+            const drawer = document.getElementById('mobile-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+
+            function openMenu() {
+                drawer.classList.add('open');
+                overlay.classList.add('visible');
+                document.body.style.overflow = 'hidden'; // Stop background scrolling
+            }
+
+            function closeMenu() {
+                drawer.classList.remove('open');
+                overlay.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+
+            if(menuBtn) menuBtn.addEventListener('click', openMenu);
+            if(closeBtn) closeBtn.addEventListener('click', closeMenu);
+            if(overlay) overlay.addEventListener('click', closeMenu);
+        });
+    </script>
+</body>
+</html>
