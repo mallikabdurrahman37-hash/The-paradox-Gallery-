@@ -1,0 +1,582 @@
+/* ==========================================================
+   ADMIN.CSS — The Studio: Dashboard & Upload Workspace
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   DASHBOARD PAGE LAYOUT
+   ---------------------------------------------------------- */
+.dashboard-page {
+  min-height: 100vh;
+  padding: calc(var(--nav-height) + 2.4rem) 0 4rem;
+}
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ----------------------------------------------------------
+   SIDEBAR
+   ---------------------------------------------------------- */
+.dashboard-sidebar {
+  position: sticky;
+  top: calc(var(--nav-height) + 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-profile-card {
+  background: var(--canvas);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.sidebar-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0,0,0,0.06), rgba(0,0,0,0.14));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--ink);
+  margin: 0 auto 1rem;
+  overflow: hidden;
+}
+
+.sidebar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar-name {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.sidebar-username {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.sidebar-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  justify-content: center;
+}
+
+.sidebar-stat {
+  text-align: center;
+}
+
+.sidebar-stat-value {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  display: block;
+  line-height: 1;
+}
+
+.sidebar-stat-label {
+  font-family: var(--font-sans);
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* Sidebar nav */
+.sidebar-nav {
+  background: var(--canvas);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.sidebar-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-luxury);
+  text-decoration: none;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  text-align: left;
+}
+
+.sidebar-nav-link:last-child {
+  border-bottom: none;
+}
+
+.sidebar-nav-link:hover {
+  color: var(--ink);
+  background: rgba(0,0,0,0.02);
+  opacity: 1;
+}
+
+.sidebar-nav-link.active {
+  color: var(--ink);
+  font-weight: 500;
+  background: rgba(0,0,0,0.03);
+}
+
+/* ----------------------------------------------------------
+   MAIN CONTENT AREA
+   ---------------------------------------------------------- */
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  min-width: 0;
+}
+
+/* ----------------------------------------------------------
+   UPLOAD CARD
+   ---------------------------------------------------------- */
+.upload-card {
+  background: var(--canvas);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--radius-lg);
+  padding: 2.4rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.upload-card-header {
+  margin-bottom: 2rem;
+}
+
+.upload-card-header h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.upload-card-header p {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+/* ----------------------------------------------------------
+   FILE DROP ZONE
+   ---------------------------------------------------------- */
+.file-drop-zone {
+  border: 2px dashed rgba(0,0,0,0.12);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-luxury);
+  position: relative;
+  overflow: hidden;
+  background: rgba(255,255,255,0.4);
+}
+
+.file-drop-zone:hover,
+.file-drop-zone.drag-over {
+  border-color: var(--ink);
+  background: rgba(255,255,255,0.7);
+}
+
+.file-drop-zone.has-preview {
+  border-style: solid;
+  border-color: var(--ink);
+  padding: 0;
+}
+
+.file-drop-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1rem;
+  opacity: 0.3;
+}
+
+.file-drop-icon img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0);
+}
+
+.file-drop-title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin-bottom: 0.4rem;
+}
+
+.file-drop-sub {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  color: rgba(0,0,0,0.3);
+}
+
+.file-drop-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+/* Preview inside drop zone */
+.file-preview-container {
+  position: relative;
+  width: 100%;
+}
+
+.file-preview-img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  display: block;
+  border-radius: var(--radius-lg);
+}
+
+.file-preview-remove {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.file-preview-remove:hover {
+  background: var(--ink);
+  color: var(--canvas);
+}
+
+/* ----------------------------------------------------------
+   UPLOAD FORM FIELDS
+   ---------------------------------------------------------- */
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1.6rem;
+}
+
+.upload-form textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--ink);
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  width: 100%;
+  outline: none;
+  transition: all 0.25s var(--ease-luxury);
+  -webkit-appearance: none;
+}
+
+.upload-form textarea::placeholder {
+  color: rgba(0,0,0,0.25);
+  font-weight: 300;
+}
+
+.upload-form textarea:focus {
+  border-color: var(--ink);
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 0 0 3px rgba(26,26,26,0.07);
+}
+
+.upload-form input[type="text"] {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--ink);
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  width: 100%;
+  outline: none;
+  transition: all 0.25s var(--ease-luxury);
+  -webkit-appearance: none;
+}
+
+.upload-form input[type="text"]::placeholder {
+  color: rgba(0,0,0,0.25);
+  font-weight: 300;
+}
+
+.upload-form input[type="text"]:focus {
+  border-color: var(--ink);
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 0 0 3px rgba(26,26,26,0.07);
+}
+
+.upload-form label {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.form-group-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ----------------------------------------------------------
+   UPLOAD PROGRESS BAR
+   ---------------------------------------------------------- */
+.upload-progress-wrapper {
+  display: none;
+  margin-top: 0.75rem;
+}
+
+.upload-progress-wrapper.visible {
+  display: block;
+}
+
+.upload-progress-bar {
+  height: 2px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.upload-progress-fill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s var(--ease-luxury);
+}
+
+.upload-progress-text {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: var(--ink-muted);
+  margin-top: 0.4rem;
+}
+
+/* ----------------------------------------------------------
+   UPLOAD BUTTON
+   ---------------------------------------------------------- */
+.upload-submit-btn {
+  align-self: flex-start;
+  min-width: 200px;
+}
+
+/* ----------------------------------------------------------
+   MY ARTWORKS LIST ON DASHBOARD
+   ---------------------------------------------------------- */
+.my-artworks-card {
+  background: var(--canvas);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.my-artworks-card h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1.4rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.my-artworks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.my-artwork-item {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: box-shadow 0.3s var(--ease-luxury);
+}
+
+.my-artwork-item:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.my-artwork-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s var(--ease-luxury);
+}
+
+.my-artwork-item:hover img {
+  transform: scale(1.03);
+}
+
+.my-artwork-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-luxury);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  gap: 0.4rem;
+}
+
+.my-artwork-item:hover .my-artwork-overlay {
+  opacity: 1;
+}
+
+.my-artwork-title {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my-artwork-likes {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+
+.my-artwork-delete {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--error);
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.my-artwork-item:hover .my-artwork-delete {
+  opacity: 1;
+}
+
+.my-artwork-delete:hover {
+  background: var(--error);
+  color: white;
+}
+
+/* ----------------------------------------------------------
+   DASHBOARD EMPTY STATE
+   ---------------------------------------------------------- */
+.dashboard-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  grid-column: 1 / -1;
+}
+
+.dashboard-empty h4 {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-empty p {
+  font-size: 0.8rem;
+  color: rgba(0,0,0,0.3);
+}
+
+/* ----------------------------------------------------------
+   RESPONSIVE
+   ---------------------------------------------------------- */
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-sidebar {
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-card {
+    padding: 1.4rem;
+  }
+
+  .my-artworks-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
