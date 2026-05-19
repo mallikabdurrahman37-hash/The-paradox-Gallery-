@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Creators — Meet the artists behind The Paradox Gallery." />
+  <title>The Creators — The Paradox Gallery</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/gallery.css" />
+</head>
+<body>
+
+  <!-- =============================================
+       NAVIGATION BAR
+       ============================================= -->
+  <nav id="navbar" class="anim-nav-init">
+    <div class="nav-brand">
+      <img src="assets/logo.png" alt="The Paradox Gallery" class="logo" onerror="this.style.display='none'" />
+      <div>
+        <span class="nav-brand-text">The Paradox Gallery</span>
+        <span class="nav-brand-tagline">Where Cringe Becomes Art</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Exhibition</a></li>
+      <li><a href="creators.html" class="active">Creators</a></li>
+      <li><a href="dashboard.html">Studio</a></li>
+    </ul>
+
+    <a href="auth.html" class="nav-cta desktop-only" id="nav-cta">Enter Gallery</a>
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Open menu">
+      <img src="assets/icon-menu.png" alt="Menu" onerror="this.parentElement.innerHTML='☰'" />
+    </button>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-drawer">
+    <div class="drawer-header">
+      <span class="nav-brand-text" style="font-family: var(--font-serif);">The Paradox Gallery</span>
+      <button class="drawer-close-btn" id="drawer-close" aria-label="Close menu">
+        <img src="assets/icon-close.png" alt="Close" onerror="this.parentElement.textContent='×'" />
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="index.html">Exhibition</a>
+      <a href="creators.html">Creators</a>
+      <a href="dashboard.html">Studio</a>
+    </nav>
+    <div class="drawer-footer">
+      <a href="auth.html" class="nav-cta" id="drawer-cta">Enter Gallery</a>
+    </div>
+  </div>
+  <div id="drawer-overlay"></div>
+
+  <!-- =============================================
+       MAIN CONTENT
+       ============================================= -->
+  <main class="page-wrapper">
+
+    <!-- CREATORS HERO -->
+    <section class="creators-hero">
+      <div class="container">
+        <span class="hero-eyebrow anim-hero">The Collective</span>
+        <h1 class="anim-hero" style="font-family: var(--font-serif); font-size: clamp(2.4rem, 6vw, 5rem); margin-bottom: 0.8rem;">The Roster</h1>
+        <p class="anim-hero" style="max-width: 520px; margin: 0 auto; font-size: 0.9rem; color: var(--ink-muted);">
+          A curated collective of digital creators who turned the absurd into the inevitable.
+          Each artist brings their own flavour of controlled chaos.
+        </p>
+      </div>
+    </section>
+
+    <!-- CREATORS GRID -->
+    <div class="container">
+      <div class="creators-grid" id="creators-grid">
+        <!-- Creator cards rendered by JS -->
+        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 0;">
+          <h3 style="font-family: var(--font-serif); font-style: italic; color: var(--ink-muted); font-weight: 400;">
+            Gathering the collective…
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALL TO ACTION -->
+    <section class="manifesto-section anim-content" style="margin-top: 0;">
+      <div class="container">
+        <span class="manifesto-label">Join the Collective</span>
+        <p class="manifesto-text" style="font-size: clamp(1rem, 2.5vw, 1.6rem); margin-bottom: 2rem;">
+          Ready to exhibit your work and claim your place on the wall?
+        </p>
+        <a href="auth.html" class="btn-primary">Become a Creator</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =============================================
+       FOOTER
+       ============================================= -->
+  <footer class="site-footer">
+    <p>© 2025 The Paradox Gallery. All rights reserved.</p>
+    <p>Where Cringe Becomes Art.</p>
+  </footer>
+
+  <!-- =============================================
+       SCRIPTS
+       ============================================= -->
+  <script src="js/ui.js" type="module"></script>
+  <script src="js/auth.js" type="module"></script>
+  <script src="js/database.js" type="module"></script>
+
+  <script type="module">
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ------------------------------------------
+    // RENDER CREATOR CARD
+    // ------------------------------------------
+    function renderCreatorCard(creator, stats, index) {
+      const initials = (creator.name || '?')
+        .split(' ')
+        .slice(0, 2)
+        .map(n => n[0] || '')
+        .join('')
+        .toUpperCase();
+
+      const delay = (0.1 + index * 0.08).toFixed(2);
+      const artworkCount = stats?.artworkCount || 0;
+      const totalLikes = stats?.totalLikes || 0;
+      const memberSince = creator.createdAt?.toDate
+        ? creator.createdAt.toDate().getFullYear()
+        : '2025';
+
+      // Anchor for direct links
+      const anchorId = creator.username || creator.id;
+
+      const card = document.createElement('div');
+      card.className = 'creator-card anim-card';
+      card.style.animationDelay = `${delay}s`;
+      card.id = `creator-${anchorId}`;
+
+      card.innerHTML = `
+        <div class="creator-card-header">
+          <div class="creator-avatar">
+            ${initials}
+          </div>
+          <div class="creator-card-info">
+            <h3>${escapeHtml(creator.name || 'Anonymous Creator')}</h3>
+            <span class="creator-handle">@${escapeHtml(creator.username || 'unknown')}</span>
+          </div>
+        </div>
+
+        ${creator.tagline ? `<p class="creator-bio">${escapeHtml(creator.tagline)}</p>` : ''}
+
+        <div class="creator-stats">
+          <div class="creator-stat">
+            <span class="creator-stat-value">${artworkCount}</span>
+            <span class="creator-stat-label">Works</span>
+          </div>
+          <div class="creator-stat">
+            <span class="creator-stat-value">${totalLikes}</span>
+            <span class="creator-stat-label">Likes</span>
+          </div>
+          <div class="creator-stat">
+            <span class="creator-stat-value">${memberSince}</span>
+            <span class="creator-stat-label">Since</span>
+          </div>
+        </div>
+
+        <a
+          href="index.html?filter=${encodeURIComponent(creator.uid || creator.id)}"
+          class="btn-secondary"
+          style="font-size: 0.65rem; padding: 0.65rem 1.4rem;"
+        >
+          View Works
+        </a>
+      `;
+
+      return card;
+    }
+
+    // ------------------------------------------
+    // LOAD CREATORS
+    // ------------------------------------------
+    async function loadCreators() {
+      const grid = document.getElementById('creators-grid');
+
+      try {
+        const creators = await window.DB?.fetchAllCreators() || [];
+
+        if (!creators.length) {
+          grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 5rem 0;">
+              <h3 style="font-family: var(--font-serif); font-style: italic; color: var(--ink-muted); font-weight: 400; margin-bottom: 0.75rem;">No creators yet</h3>
+              <p class="text-muted">Be the first to claim your spot.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Fetch artwork counts for all creators
+        const artistIds = creators.map(c => c.uid || c.id);
+        const statsCounts = await window.DB?.fetchCreatorArtworkCounts(artistIds) || {};
+
+        grid.innerHTML = '';
+        creators.forEach((creator, index) => {
+          const uid = creator.uid || creator.id;
+          const stats = statsCounts[uid] || { artworkCount: 0, totalLikes: 0 };
+          const card = renderCreatorCard(creator, stats, index);
+          grid.appendChild(card);
+        });
+
+        // Scroll to anchor if present in URL
+        const hash = window.location.hash;
+        if (hash) {
+          const target = document.querySelector(hash) || document.getElementById(`creator-${hash.slice(1)}`);
+          if (target) {
+            setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+          }
+        }
+
+      } catch (err) {
+        console.error('Failed to load creators:', err);
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 0;">
+            <h3 style="font-family: var(--font-serif); font-style: italic; color: var(--ink-muted); font-weight: 400;">
+              Failed to load creators
+            </h3>
+            <p class="text-muted" style="margin-top: 0.5rem;">Please refresh the page.</p>
+          </div>
+        `;
+      }
+    }
+
+    function waitForDB(callback, attempts = 0) {
+      if (window.DB) {
+        callback();
+      } else if (attempts < 30) {
+        setTimeout(() => waitForDB(callback, attempts + 1), 100);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      waitForDB(loadCreators);
+    });
+  </script>
+
+</body>
+</html>

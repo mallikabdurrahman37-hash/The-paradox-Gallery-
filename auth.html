@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Enter The Paradox Gallery — Login or create your creator account." />
+  <title>Enter — The Paradox Gallery</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+
+  <!-- =============================================
+       NAVIGATION BAR
+       ============================================= -->
+  <nav id="navbar" class="anim-nav-init">
+    <div class="nav-brand">
+      <img src="assets/logo.png" alt="The Paradox Gallery" class="logo" onerror="this.style.display='none'" />
+      <div>
+        <span class="nav-brand-text">The Paradox Gallery</span>
+        <span class="nav-brand-tagline">Where Cringe Becomes Art</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Exhibition</a></li>
+      <li><a href="creators.html">Creators</a></li>
+    </ul>
+
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Open menu">
+      <img src="assets/icon-menu.png" alt="Menu" onerror="this.parentElement.innerHTML='☰'" />
+    </button>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-drawer">
+    <div class="drawer-header">
+      <span class="nav-brand-text" style="font-family: var(--font-serif);">The Paradox Gallery</span>
+      <button class="drawer-close-btn" id="drawer-close" aria-label="Close">
+        <img src="assets/icon-close.png" alt="Close" onerror="this.parentElement.textContent='×'" />
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="index.html">Exhibition</a>
+      <a href="creators.html">Creators</a>
+    </nav>
+  </div>
+  <div id="drawer-overlay"></div>
+
+  <!-- =============================================
+       AUTH CONTENT
+       ============================================= -->
+  <div class="page-wrapper">
+    <div class="auth-page">
+      <div class="auth-container anim-content">
+
+        <!-- Header -->
+        <div class="auth-header">
+          <span class="auth-eyebrow">The Gate</span>
+          <h1>Enter the Gallery</h1>
+          <p>Join the collective of creators who embrace the beautiful and the absurd.</p>
+        </div>
+
+        <!-- Tab Switcher -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login">Sign In</button>
+          <button class="auth-tab" data-tab="register">Join Now</button>
+        </div>
+
+        <!-- ==================
+             LOGIN PANEL
+             ================== -->
+        <div class="auth-panel active" id="panel-login">
+          <form class="auth-form" id="login-form" novalidate>
+
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input
+                type="email"
+                id="login-email"
+                name="email"
+                placeholder="your@email.com"
+                autocomplete="email"
+                required
+              />
+              <span class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="login-password"
+                  name="password"
+                  placeholder="Your password"
+                  autocomplete="current-password"
+                  required
+                />
+                <button type="button" class="password-toggle">SHOW</button>
+              </div>
+              <span class="field-error"></span>
+            </div>
+
+            <button type="submit" class="auth-submit-btn">
+              Enter Gallery
+            </button>
+
+          </form>
+
+          <p class="auth-alt-text">
+            New to the gallery?
+            <a href="#" onclick="document.querySelector('[data-tab=register]').click(); return false;">
+              Join the collective.
+            </a>
+          </p>
+        </div>
+
+        <!-- ==================
+             REGISTER PANEL
+             ================== -->
+        <div class="auth-panel" id="panel-register">
+          <form class="auth-form" id="register-form" novalidate>
+
+            <div class="form-group">
+              <label for="reg-name">Full Name</label>
+              <input
+                type="text"
+                id="reg-name"
+                name="name"
+                placeholder="Your full name"
+                autocomplete="name"
+                required
+              />
+              <span class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-phone">Phone Number</label>
+              <input
+                type="tel"
+                id="reg-phone"
+                name="phone"
+                placeholder="+91 98765 43210"
+                autocomplete="tel"
+                required
+              />
+              <span class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-email">Email Address</label>
+              <input
+                type="email"
+                id="reg-email"
+                name="email"
+                placeholder="your@email.com"
+                autocomplete="email"
+                required
+              />
+              <span class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-password">Password</label>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="reg-password"
+                  name="password"
+                  placeholder="Min. 6 characters"
+                  autocomplete="new-password"
+                  required
+                  minlength="6"
+                />
+                <button type="button" class="password-toggle">SHOW</button>
+              </div>
+              <span class="field-error"></span>
+            </div>
+
+            <button type="submit" class="auth-submit-btn">
+              Create Account
+            </button>
+
+          </form>
+
+          <p class="auth-alt-text">
+            Already a member?
+            <a href="#" onclick="document.querySelector('[data-tab=login]').click(); return false;">
+              Sign in here.
+            </a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       SCRIPTS
+       ============================================= -->
+  <script src="js/ui.js" type="module"></script>
+  <script src="js/auth.js" type="module"></script>
+
+</body>
+</html>

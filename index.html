@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Paradox Gallery — Where Cringe Becomes Art. An elite digital art platform for fearless creators." />
+  <title>The Paradox Gallery — Where Cringe Becomes Art</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/gallery.css" />
+</head>
+<body>
+
+  <!-- =============================================
+       NAVIGATION BAR
+       ============================================= -->
+  <nav id="navbar" class="anim-nav-init">
+    <div class="nav-brand">
+      <img src="assets/logo.png" alt="The Paradox Gallery" class="logo" onerror="this.style.display='none'" />
+      <div>
+        <span class="nav-brand-text">The Paradox Gallery</span>
+        <span class="nav-brand-tagline">Where Cringe Becomes Art</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Exhibition</a></li>
+      <li><a href="creators.html">Creators</a></li>
+      <li><a href="dashboard.html">Studio</a></li>
+    </ul>
+
+    <a href="auth.html" class="nav-cta desktop-only" id="nav-cta">Enter Gallery</a>
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Open menu">
+      <img src="assets/icon-menu.png" alt="Menu" onerror="this.parentElement.innerHTML='☰'" />
+    </button>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-drawer">
+    <div class="drawer-header">
+      <span class="nav-brand-text" style="font-family: var(--font-serif);">The Paradox Gallery</span>
+      <button class="drawer-close-btn" id="drawer-close" aria-label="Close menu">
+        <img src="assets/icon-close.png" alt="Close" onerror="this.parentElement.textContent='×'" />
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="index.html">Exhibition</a>
+      <a href="creators.html">Creators</a>
+      <a href="dashboard.html">Studio</a>
+    </nav>
+    <div class="drawer-footer">
+      <a href="auth.html" class="nav-cta" id="drawer-cta">Enter Gallery</a>
+    </div>
+  </div>
+  <div id="drawer-overlay"></div>
+
+  <!-- =============================================
+       MAIN CONTENT
+       ============================================= -->
+  <main class="page-wrapper">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="container">
+        <span class="hero-eyebrow anim-hero">Est. 2025 · Digital Art Exhibition</span>
+        <h1 class="hero-title anim-hero">
+          Where <em>Cringe</em><br />Becomes Art.
+        </h1>
+        <p class="hero-tagline anim-hero">
+          A curated space for digital creators who refuse to be boring.
+          Upload, exhibit, and collect the art of the absurd.
+        </p>
+        <div class="hero-actions anim-hero">
+          <a href="dashboard.html" class="btn-primary">Upload Your Work</a>
+          <a href="creators.html" class="btn-secondary">Meet the Creators</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANIFESTO SECTION -->
+    <section class="manifesto-section anim-content">
+      <div class="container">
+        <span class="manifesto-label">The Manifesto</span>
+        <p class="manifesto-text">
+          "Art is not what you see, but what you make others see. 
+          We are the curators of <strong>beautiful disasters</strong> — 
+          the gallery where the awkward, the absurd, and the audacious 
+          find their rightful place on the wall."
+        </p>
+      </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section class="gallery-section">
+      <div class="container">
+        <div class="section-header anim-content">
+          <div class="section-header-left">
+            <h2>The Exhibition</h2>
+            <p>Current artworks on display</p>
+          </div>
+          <div class="section-header-right">
+            <span class="text-muted" id="artwork-count-label">Loading…</span>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar anim-content">
+          <span class="filter-label">Filter</span>
+          <button class="filter-badge active" data-filter="all">All Works</button>
+          <button class="filter-badge" data-filter="recent">Recent</button>
+          <button class="filter-badge" data-filter="popular">Most Liked</button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- Art cards rendered by JS -->
+          <div class="gallery-empty" id="gallery-loading">
+            <h3>Curating the collection…</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =============================================
+       ARTWORK MODAL
+       ============================================= -->
+  <div id="artwork-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close">
+        <img src="assets/icon-close.png" alt="Close" onerror="this.parentElement.textContent='×'" />
+      </button>
+      <div class="modal-image-wrapper">
+        <img class="modal-artwork-img" src="" alt="" />
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-title modal-artwork-title"></h2>
+        <p class="modal-description modal-artwork-description"></p>
+        <p style="font-size:0.72rem;letter-spacing:1px;color:var(--ink-muted);margin-bottom:1.2rem;" class="modal-artwork-artist"></p>
+        <div class="modal-actions">
+          <button class="btn-primary modal-like-btn" onclick="handleModalLike(this)">
+            <img src="assets/icon-like.png" alt="Like" class="modal-like-icon" style="width:16px;height:16px;filter:invert(1);" />
+            <span class="modal-artwork-likes-count">0</span>
+          </button>
+          <button class="btn-secondary modal-download-btn">
+            <img src="assets/icon-download.png" alt="Download" style="width:16px;height:16px;filter:brightness(0);" />
+            Download
+          </button>
+          <button class="btn-secondary modal-share-btn" onclick="handleShare()">
+            <img src="assets/icon-share.png" alt="Share" style="width:16px;height:16px;filter:brightness(0);" />
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       FOOTER
+       ============================================= -->
+  <footer class="site-footer">
+    <p>© 2025 The Paradox Gallery. All rights reserved.</p>
+    <p>Where Cringe Becomes Art.</p>
+  </footer>
+
+  <!-- =============================================
+       SCRIPTS
+       ============================================= -->
+  <script src="js/ui.js" type="module"></script>
+  <script src="js/auth.js" type="module"></script>
+  <script src="js/database.js" type="module"></script>
+
+  <script type="module">
+    // Wait for modules to load
+    let allArtworks = [];
+    let currentFilter = 'all';
+    let currentModalArtworkId = null;
+
+    // ------------------------------------------
+    // RENDER GALLERY CARD
+    // ------------------------------------------
+    function renderArtworkCard(artwork, index) {
+      const isLiked = window.currentUser
+        ? (artwork.likedBy || []).includes(window.currentUser.uid)
+        : false;
+
+      const likeIcon = isLiked ? 'assets/icon-like-filled.png' : 'assets/icon-like.png';
+      const delay = (0.1 + index * 0.07).toFixed(2);
+
+      const card = document.createElement('div');
+      card.className = 'art-card anim-card';
+      card.style.animationDelay = `${delay}s`;
+      card.dataset.artworkId = artwork.id;
+
+      // Vary aspect ratio for masonry effect
+      const ratios = ['square', 'tall', 'wide'];
+      const ratioClass = ratios[index % 3];
+
+      card.innerHTML = `
+        <div class="art-card-image-wrapper ${ratioClass}">
+          <img
+            data-src="${artwork.imageUrl}"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+            alt="${escapeHtml(artwork.title)}"
+            loading="lazy"
+          />
+          <div class="art-card-overlay">
+            <button
+              class="art-card-action-btn like-btn ${isLiked ? 'liked-state' : ''}"
+              title="Like"
+              data-artwork-id="${artwork.id}"
+              onclick="handleCardLike(event, '${artwork.id}')"
+            >
+              <img src="${likeIcon}" alt="Like" class="like-icon-img" />
+            </button>
+            <button
+              class="art-card-action-btn"
+              title="Download"
+              onclick="handleCardDownload(event, '${artwork.imageUrl}', '${escapeHtml(artwork.title)}', '${escapeHtml(artwork.artistUsername || '')}')"
+            >
+              <img src="assets/icon-download.png" alt="Download" />
+            </button>
+            <button
+              class="art-card-action-btn"
+              title="Share"
+              onclick="handleCardShare(event, '${artwork.id}', '${escapeHtml(artwork.title)}')"
+            >
+              <img src="assets/icon-share.png" alt="Share" />
+            </button>
+          </div>
+        </div>
+        <div class="art-card-body">
+          <h3 class="art-card-title">${escapeHtml(artwork.title)}</h3>
+          <p class="art-card-artist">
+            <a href="creators.html#${escapeHtml(artwork.artistUsername || '')}" onclick="event.stopPropagation()">
+              @${escapeHtml(artwork.artistUsername || 'unknown')}
+            </a>
+          </p>
+          <div class="art-card-meta">
+            <span class="art-card-likes">
+              <img src="${likeIcon}" alt="" class="like-count-icon" />
+              <span class="likes-count-display">${artwork.likesCount || 0}</span>
+            </span>
+          </div>
+        </div>
+      `;
+
+      // Open modal on card click (not on button clicks)
+      card.addEventListener('click', (e) => {
+        if (!e.target.closest('button') && !e.target.closest('a')) {
+          openArtworkModalById(artwork.id);
+        }
+      });
+
+      return card;
+    }
+
+    // ------------------------------------------
+    // RENDER GALLERY
+    // ------------------------------------------
+    function renderGallery(artworks) {
+      const grid = document.getElementById('gallery-grid');
+      const countLabel = document.getElementById('artwork-count-label');
+
+      grid.innerHTML = '';
+
+      if (!artworks || artworks.length === 0) {
+        grid.innerHTML = `
+          <div class="gallery-empty">
+            <h3>No artworks yet</h3>
+            <p class="text-muted">Be the first to exhibit your work.</p>
+          </div>
+        `;
+        if (countLabel) countLabel.textContent = '0 works';
+        return;
+      }
+
+      if (countLabel) countLabel.textContent = `${artworks.length} work${artworks.length !== 1 ? 's' : ''}`;
+
+      artworks.forEach((artwork, i) => {
+        const card = renderArtworkCard(artwork, i);
+        grid.appendChild(card);
+      });
+
+      // Initialize lazy loading for new images
+      if (window.UI) window.UI.showToast && null; // touch UI module
+      initLazyLoad();
+    }
+
+    function initLazyLoad() {
+      const lazyImages = document.querySelectorAll('img[data-src]');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              img.src = img.dataset.src;
+              img.removeAttribute('data-src');
+              observer.unobserve(img);
+            }
+          });
+        }, { rootMargin: '300px' });
+        lazyImages.forEach(img => observer.observe(img));
+      } else {
+        lazyImages.forEach(img => { img.src = img.dataset.src; img.removeAttribute('data-src'); });
+      }
+    }
+
+    // ------------------------------------------
+    // FILTER LOGIC
+    // ------------------------------------------
+    function applyFilter(filter) {
+      currentFilter = filter;
+      let filtered = [...allArtworks];
+
+      if (filter === 'popular') {
+        filtered.sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0));
+      } else if (filter === 'recent') {
+        // Already sorted by createdAt desc from Firestore
+        filtered = filtered.slice(0, 20);
+      }
+
+      renderGallery(filtered);
+    }
+
+    // ------------------------------------------
+    // CARD ACTION HANDLERS
+    // ------------------------------------------
+    window.handleCardLike = async (e, artworkId) => {
+      e.stopPropagation();
+      const btn = e.currentTarget;
+      const likeIcon = btn.querySelector('.like-icon-img');
+      const card = btn.closest('.art-card');
+      const likeCountDisplay = card?.querySelector('.likes-count-display');
+      const countIcon = card?.querySelector('.like-count-icon');
+
+      await window.DB?.toggleLike(artworkId, btn, likeIcon, likeCountDisplay);
+
+      // Sync count icon
+      if (countIcon && likeIcon) countIcon.src = likeIcon.src;
+
+      // Update in-memory artworks array
+      const artwork = allArtworks.find(a => a.id === artworkId);
+      if (artwork) {
+        const uid = window.currentUser?.uid;
+        if (uid) {
+          const isLiked = (artwork.likedBy || []).includes(uid);
+          if (isLiked) {
+            artwork.likedBy = (artwork.likedBy || []).filter(id => id !== uid);
+            artwork.likesCount = Math.max(0, (artwork.likesCount || 1) - 1);
+          } else {
+            artwork.likedBy = [...(artwork.likedBy || []), uid];
+            artwork.likesCount = (artwork.likesCount || 0) + 1;
+          }
+        }
+      }
+    };
+
+    window.handleCardDownload = (e, imageUrl, title, username) => {
+      e.stopPropagation();
+      window.UI?.downloadWithWatermark(imageUrl, title, username);
+    };
+
+    window.handleCardShare = (e, artworkId, title) => {
+      e.stopPropagation();
+      const shareUrl = `${window.location.origin}${window.location.pathname}?artwork=${artworkId}`;
+      if (navigator.share) {
+        navigator.share({ title: `${title} — The Paradox Gallery`, url: shareUrl });
+      } else {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          window.UI?.showToast('Link copied to clipboard!', 'success');
+        });
+      }
+    };
+
+    // ------------------------------------------
+    // MODAL FUNCTIONS
+    // ------------------------------------------
+    async function openArtworkModalById(artworkId) {
+      const artwork = allArtworks.find(a => a.id === artworkId)
+        || await window.DB?.fetchArtworkById(artworkId);
+      if (!artwork) return;
+
+      currentModalArtworkId = artworkId;
+      window.UI?.openArtworkModal(artwork, window.currentUser?.uid);
+    }
+
+    window.handleModalLike = async (btn) => {
+      if (!currentModalArtworkId) return;
+      const likeIcon = btn.querySelector('.modal-like-icon');
+      const likeCountEl = btn.querySelector('.modal-artwork-likes-count');
+      await window.DB?.toggleLike(currentModalArtworkId, btn, likeIcon, likeCountEl);
+
+      // Sync card in grid
+      const card = document.querySelector(`.art-card[data-artwork-id="${currentModalArtworkId}"]`);
+      if (card && likeIcon && likeCountEl) {
+        const cardLikeIcon = card.querySelector('.like-icon-img');
+        const cardCountIcon = card.querySelector('.like-count-icon');
+        const cardCountDisplay = card.querySelector('.likes-count-display');
+        if (cardLikeIcon) cardLikeIcon.src = likeIcon.src;
+        if (cardCountIcon) cardCountIcon.src = likeIcon.src;
+        if (cardCountDisplay) cardCountDisplay.textContent = likeCountEl.textContent;
+      }
+    };
+
+    window.handleShare = () => {
+      if (!currentModalArtworkId) return;
+      const artwork = allArtworks.find(a => a.id === currentModalArtworkId);
+      const shareUrl = `${window.location.origin}${window.location.pathname}?artwork=${currentModalArtworkId}`;
+      if (navigator.share) {
+        navigator.share({ title: `${artwork?.title || 'Artwork'} — The Paradox Gallery`, url: shareUrl });
+      } else {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          window.UI?.showToast('Link copied!', 'success');
+        });
+      }
+    };
+
+    // ------------------------------------------
+    // ESCAPE HTML HELPER
+    // ------------------------------------------
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ------------------------------------------
+    // LOAD GALLERY ON MODULE READY
+    // ------------------------------------------
+    async function loadGallery() {
+      try {
+        allArtworks = await window.DB?.fetchAllArtworks(100) || [];
+        applyFilter('all');
+
+        // Init filter badges
+        window.UI?.initFilterBadges((filter) => applyFilter(filter));
+
+        // Check if arriving via shared URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sharedArtworkId = urlParams.get('artwork');
+        if (sharedArtworkId) {
+          setTimeout(() => openArtworkModalById(sharedArtworkId), 500);
+        }
+      } catch (err) {
+        console.error('Failed to load artworks:', err);
+        document.getElementById('gallery-grid').innerHTML = `
+          <div class="gallery-empty">
+            <h3>Failed to load artworks</h3>
+            <p class="text-muted">Please refresh the page.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Wait for DB module to be ready
+    function waitForDB(callback, attempts = 0) {
+      if (window.DB) {
+        callback();
+      } else if (attempts < 30) {
+        setTimeout(() => waitForDB(callback, attempts + 1), 100);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      waitForDB(loadGallery);
+    });
+  </script>
+
+</body>
+</html>

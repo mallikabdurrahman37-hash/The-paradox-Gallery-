@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Identity — The Paradox Gallery</title>
+    <link rel="shortcut icon" href="assets/favicon.png" type="image/png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/admin.css">
+    
+    <style>
+        /* Apple iOS-Style Choreographed Entrance CSS Keyframes */
+        @keyframes pageFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes navDrop {
+            0% { transform: translateY(-100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes contentGlideUp {
+            0% { transform: translateY(40px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        body {
+            background-color: #F9F8F5;
+            color: #1A1A1A;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            animation: pageFade 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Global Structural Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            box-sizing: border-box;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            background: rgba(249, 248, 245, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+            animation: navDrop 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            color: #1A1A1A;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #1A1A1A;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+        }
+
+        /* Identity Workspace Container */
+        .settings-container {
+            max-width: 600px;
+            margin: 160px auto 80px auto;
+            padding: 0 24px;
+            box-sizing: border-box;
+            animation: contentGlideUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.2s forwards;
+            opacity: 0;
+        }
+
+        .editorial-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .editorial-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 400;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .editorial-header p {
+            font-size: 14px;
+            color: #1A1A1A;
+            opacity: 0.5;
+            margin: 0;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+
+        /* Glassmorphic Portal Form Elements */
+        .identity-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(26, 26, 26, 0.05);
+            border-radius: 0px;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #1A1A1A;
+            opacity: 0.7;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .username-prefix {
+            position: absolute;
+            left: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #1A1A1A;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            background: transparent;
+            border: 1px solid rgba(26, 26, 26, 0.15);
+            padding: 16px;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            color: #1A1A1A;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #1A1A1A;
+        }
+
+        .input-with-prefix {
+            padding-left: 32px;
+        }
+
+        textarea.form-input {
+            resize: none;
+            height: 110px;
+            line-height: 1.6;
+        }
+
+        /* Premium Action Buttons */
+        .btn-submit {
+            width: 100%;
+            background: #1A1A1A;
+            color: #F9F8F5;
+            border: none;
+            padding: 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Feedback Status Message Overlays */
+        .status-message {
+            font-size: 13px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+            letter-spacing: 0.5px;
+        }
+
+        .status-success {
+            color: #2E7D32;
+        }
+
+        .status-error {
+            color: #C62828;
+        }
+
+        /* Responsive Optimization Layer (Redmi 13C 5G / Mobile Target) */
+        @media (max-width: 768px) {
+            header {
+                padding: 0 20px;
+                height: 70px;
+            }
+            .logo {
+                font-size: 20px;
+            }
+            .nav-links {
+                gap: 15px;
+            }
+            .nav-link {
+                font-size: 11px;
+                letter-spacing: 1px;
+            }
+            .settings-container {
+                margin-top: 120px;
+                padding: 0 16px;
+            }
+            .editorial-header h1 {
+                font-size: 32px;
+            }
+            .identity-card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">PG.</a>
+        <nav class="nav-links">
+            <a href="index.html" class="nav-link">Exhibition</a>
+            <a href="dashboard.html" class="nav-link">Studio</a>
+            <a href="#" id="logoutBtn" class="nav-link" style="color: #C62828;">Sign Out</a>
+        </nav>
+    </header>
+
+    <main class="settings-container">
+        <div class="editorial-header">
+            <h1>Claim Identity</h1>
+            <p>Establish your unique signature inside the museum. Your username acts as your verification handle across all published artworks.</p>
+        </div>
+
+        <div class="identity-card">
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="fullName" class="form-input" style="background: rgba(0,0,0,0.02); color: rgba(0,0,0,0.4); border-color: rgba(0,0,0,0.05);" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Unique Handle ID</label>
+                    <div class="input-wrapper">
+                        <span class="username-prefix">@</span>
+                        <input type="text" id="username" class="form-input input-with-prefix" placeholder="username" required autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contact Sequence (Phone)</label>
+                    <input type="tel" id="phoneNumber" class="form-input" placeholder="9876543210" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Artist Manifesto (Bio)</label>
+                    <textarea id="artistBio" class="form-input" placeholder="Describe your creative paradox, styles, and perspective..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit" id="saveBtn">Save Identity Modifications</button>
+                
+                <div id="statusFeedback" class="status-message"></div>
+            </form>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+        // Global Firebase Configuration Hooks mapping directly to platform keys
+        const firebaseConfig = {
+            apiKey: "AIzaSyDNDQjRX8Y7j4zZ0mV-m__HyJWrQgTBxYA",
+            authDomain: "the-paradox-gallery.firebaseapp.com",
+            projectId: "the-paradox-gallery",
+            storageBucket: "the-paradox-gallery.firebasestorage.app",
+            messagingSenderId: "659400708496",
+            appId: "1:659400708496:web:f9a8c5c8ba33f15ce8e315",
+            measurementId: "G-GMGTY7W8TW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUserDocRef = null;
+
+        // Session Observer Tracking
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                // If unauthenticated, bounce straight to entrance gate
+                window.location.href = 'auth.html';
+            } else {
+                currentUserDocRef = doc(db, "users", user.uid);
+                await populateProfileData();
+            }
+        });
+
+        // Pull active Firestore credentials and mount inside DOM layers
+        async function populateProfileData() {
+            try {
+                const docSnap = await getDoc(currentUserDocRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('fullName').value = data.name || '';
+                    document.getElementById('username').value = data.username || '';
+                    document.getElementById('phoneNumber').value = data.phone || '';
+                    document.getElementById('artistBio').value = data.bio || '';
+                }
+            } catch (error) {
+                showStatus('Error pulling remote registry parameters.', false);
+            }
+        }
+
+        // Handle Form Submission and claim profile metadata securely
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('saveBtn');
+            const usernameInput = document.getElementById('username').value.trim().toLowerCase();
+            const phoneInput = document.getElementById('phoneNumber').value.trim();
+            const bioInput = document.getElementById('artistBio').value.trim();
+
+            // Enforce basic standard alphanumeric character rule validations
+            const usernameRegex = /^[a-z0-9_.]+$/;
+            if (!usernameRegex.test(usernameInput)) {
+                showStatus('Usernames must contain only lowercase letters, numbers, underscores, or dots.', false);
+                return;
+            }
+
+            saveBtn.disabled = true;
+            saveBtn.innerText = "Checking Availability...";
+
+            try {
+                // Query Firestore database to prevent username duplicates
+                const usersRef = collection(db, "users");
+                const q = query(usersRef, where("username", "==", usernameInput));
+                const querySnapshot = await getDocs(q);
+
+                let identityConflict = false;
+                querySnapshot.forEach((doc) => {
+                    if (doc.id !== auth.currentUser.uid) {
+                        identityConflict = true;
+                    }
+                });
+
+                if (identityConflict) {
+                    showStatus('This handle has already been claimed by another creator.', false);
+                    saveBtn.disabled = false;
+                    saveBtn.innerText = "Save Identity Modifications";
+                    return;
+                }
+
+                // Push and commit the clean changes to current user's Firestore Document node
+                await updateDoc(currentUserDocRef, {
+                    username: usernameInput,
+                    phone: phoneInput,
+                    bio: bioInput,
+                    updatedAt: new Date()
+                });
+
+                showStatus('Identity claimed successfully! Accessing Studio...', true);
+                
+                // Release the guard and pass straight into Upload Studio Workspace Dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                showStatus('Database transaction failed. Attempt update again.', false);
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Save Identity Modifications";
+            }
+        });
+
+        // Global Feedback Status Overlay Engine
+        function showStatus(text, isSuccess) {
+            const feedback = document.getElementById('statusFeedback');
+            feedback.innerText = text;
+            feedback.className = `status-message ${isSuccess ? 'status-success' : 'status-error'}`;
+            feedback.style.display = 'block';
+        }
+
+        // De-authenticate current active dashboard user session
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = 'auth.html';
+            });
+        });
+    </script>
+</body>
+</html>
