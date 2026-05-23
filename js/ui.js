@@ -400,12 +400,28 @@ window.UI = {
   debounce,
 };
 // Register Service Worker for PWA - Auto-registered on all pages
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        // '/sw.js' ka matlab hai ki file root folder mein hai.
-        // Agar tumhari file kisi folder ke andar hai toh sahi path dena.
-        navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Paradox App: Service Worker Registered!', reg))
-            .catch(err => console.log('Paradox App: Registration failed: ', err));
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener("load", () => {
+
+        navigator.serviceWorker
+            .register("sw.js")
+
+            .then((reg) => {
+                console.log(
+                    "Paradox App: Service Worker Registered!",
+                    reg
+                );
+            })
+
+            .catch((err) => {
+                console.log(
+                    "Paradox App: Registration failed:",
+                    err
+                );
+            });
+
     });
+
 }
