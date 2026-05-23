@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Paradox Lab — Hide in Plain Sight</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  
+  <!-- 🔥 CONNECTING YOUR MAIN THEME -->
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/gallery.css" />
+  
+  <style>
+    /* ==========================================
+       THE PARADOX LAB - PREMIUM INTEGRATION
+       ========================================== */
+    body {
+        /* EXACTLY YOUR GALLERY BACKGROUND */
+        background-image: url('assets/bg.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .lab-container {
+        flex: 1;
+        max-width: 1100px;
+        margin: 120px auto 60px; /* Push down below navbar */
+        padding: 0 20px;
+        width: 100%;
+    }
+
+    .lab-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    .lab-header h1 {
+        font-family: var(--font-serif);
+        font-size: 3.5rem;
+        color: var(--ink);
+        margin-bottom: 15px;
+    }
+
+    .lab-header p {
+        font-family: var(--font-sans);
+        color: var(--ink-muted);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    .tool-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
+    @media (max-width: 768px) {
+        .tool-grid { grid-template-columns: 1fr; }
+        .lab-header h1 { font-size: 2.5rem; }
+    }
+
+    /* Premium Glass Cards */
+    .tool-card {
+        background: rgba(249, 248, 245, 0.75); /* Frosted Cream */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(26, 26, 26, 0.08);
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+        border-radius: 2px; /* Brutalist edge matching your buttons */
+    }
+
+    .tool-card h3 {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        margin-bottom: 25px;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .tool-card h3 span {
+        display: block;
+        width: 8px;
+        height: 8px;
+        background: var(--rust);
+        border-radius: 50%;
+    }
+
+    /* Input & Forms matching global theme */
+       /* Isey replace karo */
+    .file-upload {
+        display: block;
+        border: 1px solid rgba(26, 26, 26, 0.1); /* Dashed hata kar solid kiya */
+        border-radius: 16px; /* Smooth rounded corners */
+        padding: 30px 20px;
+        text-align: center;
+        cursor: pointer;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        font-family: var(--font-sans);
+        font-size: 0.9rem;
+        color: var(--ink-muted);
+        background: rgba(249, 248, 245, 0.6);
+        /* 🔥 PREMIUM 3D INSET DEPTH EFFECT */
+        box-shadow: inset 3px 3px 8px rgba(0,0,0,0.06), inset -3px -3px 8px rgba(255,255,255,0.8);
+    }
+
+    .file-upload:hover {
+        border-color: var(--rust);
+        color: var(--rust);
+        box-shadow: inset 4px 4px 10px rgba(0,0,0,0.08), inset -4px -4px 10px rgba(255,255,255,0.9);
+    }
+
+    .file-upload input[type="file"] { display: none; }
+    .file-name-display { margin-top: 10px; font-weight: 600; color: var(--rust); }
+
+    /* Isey bhi replace karo */
+    textarea {
+        width: 100%;
+        height: 120px;
+        padding: 15px;
+        border: 1px solid rgba(26, 26, 26, 0.1);
+        border-radius: 16px; /* Smooth rounded corners */
+        background: rgba(249, 248, 245, 0.6);
+        /* 🔥 PREMIUM 3D INSET DEPTH EFFECT */
+        box-shadow: inset 3px 3px 8px rgba(0,0,0,0.06), inset -3px -3px 8px rgba(255,255,255,0.8);
+        font-family: var(--font-sans);
+        font-size: 0.9rem;
+        color: var(--ink);
+        margin-bottom: 20px;
+        resize: none;
+        transition: 0.3s;
+    }
+
+
+    textarea:focus {
+        outline: none;
+        border-color: var(--rust);
+        box-shadow: inset 0 0 0 1px var(--rust);
+    }
+
+    #decode-output {
+        margin-top: 20px;
+        padding: 20px;
+        background: rgba(26, 26, 26, 0.03);
+        border-left: 3px solid var(--rust);
+        font-family: monospace;
+        font-size: 0.9rem;
+        color: var(--ink);
+        word-wrap: break-word;
+        display: none;
+        line-height: 1.5;
+    }
+
+    canvas { display: none; }
+    /* ==========================================
+       PREMIUM BUTTON PROGRESS ANIMATION
+       ========================================== */
+    .lab-btn-loading {
+        pointer-events: none;
+        position: relative;
+        overflow: hidden; /* Progress bar ko button ke bahar nahi nikalne dega */
+        background: var(--ink) !important;
+        transition: all 0.3s ease;
+    }
+
+
+    /* Container jo button ke upar aayega */
+    .lab-btn-progress-wrapper {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        color: #F9F8F5; /* Bright cream color for max contrast */
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    /* Smooth running progress bar */
+    .lab-btn-progress-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background: var(--rust); /* Orange fill */
+        z-index: 1;
+        transition: width 0.1s linear;
+        box-shadow: 2px 0 10px rgba(200, 75, 49, 0.5);
+    }
+
+    .pct-text {
+        font-family: monospace;
+        margin-left: 10px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-shadow: 0 0 5px rgba(0,0,0,0.5); /* Text ke piche shadow taki hamesha dikhe */
+    }
+
+        /* ==========================================
+       DESKTOP MANIFESTO / VISION (HIDDEN ON MOBILE)
+       ========================================== */
+    .lab-vision-desktop {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-top: 80px;
+        padding-top: 50px;
+        border-top: 1px solid rgba(26, 26, 26, 0.1);
+    }
+    
+    .vision-box h4 {
+        font-family: var(--font-serif);
+        font-size: 1.2rem;
+        color: var(--ink);
+        margin-bottom: 12px;
+    }
+    
+    .vision-box p {
+        font-family: var(--font-sans);
+        font-size: 0.85rem;
+        color: var(--ink-muted);
+        line-height: 1.6;
+    }
+
+    /* Mobile pe aate hi isey gayab (hide) kar dega */
+    @media (max-width: 768px) {
+        .lab-vision-desktop { display: none; }
+    }
+
+  </style>
+</head>
+<body>
+<body>
+
+  <!-- 🔥 THE CJP ALERT BAR (PASTE THIS HERE) -->
+  <div class="cjp-alert-bar">
+      <span class="cjp-alert-text">
+          <span class="cjp-alert-text-long">The Paradox Gallery stands with the unheard. </span>
+          Proudly supporting CJP.
+      </span>
+      <a href="https://cockroachjantaparty.org/" target="_blank" rel="noopener noreferrer" class="cjp-alert-link">
+          JOIN THE REBELLION ↗
+      </a>
+  </div>
+
+  <!-- =============================================
+       NAVIGATION BAR (EXACTLY FROM INDEX.HTML)
+       ============================================= -->
+  <nav id="navbar" class="anim-nav-init">
+    <div class="nav-brand">
+      <img src="assets/logo.png" alt="The Paradox Gallery" class="logo" onerror="this.style.display='none'" />
+      <div>
+        <span class="nav-brand-text">The Paradox Gallery</span>
+        <span class="nav-brand-tagline">Where Cringe Becomes Art</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Exhibition</a></li>
+      <li><a href="creators.html">Creators</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="dashboard.html">Studio</a></li>
+      <li><a href="tools.html" class="active">Lab</a></li>
+    </ul>
+
+    <a href="auth.html" class="nav-cta desktop-only" id="nav-cta">Enter Gallery</a>
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Open menu">
+      <img src="assets/icon-menu.png" alt="Menu" onerror="this.parentElement.innerHTML='☰'" />
+    </button>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-drawer">
+    <div class="drawer-header">
+      <span class="nav-brand-text" style="font-family: var(--font-serif);">The Paradox Gallery</span>
+      <button class="drawer-close-btn" id="drawer-close" aria-label="Close menu">
+        <img src="assets/icon-close.png" alt="Close" onerror="this.parentElement.textContent='×'" />
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="index.html">Exhibition</a>
+      <a href="creators.html">Creators</a>
+      <a href="about.html">About Us</a>
+      <a href="dashboard.html">Studio</a>
+      <a href="tools.html">Lab</a>
+    </nav>
+    <div class="drawer-footer">
+      <a href="auth.html" class="nav-cta" id="drawer-cta">Enter Gallery</a>
+    </div>
+  </div>
+  <div id="drawer-overlay"></div>
+
+  <!-- =============================================
+       MAIN LAB CONTENT
+       ============================================= -->
+  <main class="lab-container anim-content">
+      <div class="lab-header">
+          <h1>Steganography</h1>
+          <p>Hide your rebellion in plain sight. Zero servers. Total privacy.</p>
+      </div>
+
+      <div class="tool-grid">
+        
+          <!-- ENCODE CARD -->
+          <div class="tool-card">
+              <h3><span></span> Encode Message</h3>
+              <label class="file-upload" id="encode-dropzone">
+                  <span id="encode-label-text">Select or Drop Cover Image</span>
+                  <div id="encode-filename" class="file-name-display"></div>
+                  <input type="file" id="encode-image" accept="image/png, image/jpeg">
+              </label>
+              <textarea id="encode-text" placeholder="Type your secret message here..."></textarea>
+              <button class="btn-primary" style="width:100%" id="btn-encode">Hide & Download</button>
+              <a id="download-link" style="display: none;"></a>
+          </div>
+
+          <!-- DECODE CARD -->
+          <div class="tool-card">
+              <h3><span></span> Decode Art</h3>
+              <label class="file-upload" id="decode-dropzone">
+                  <span id="decode-label-text">Select or Drop Encoded Image</span>
+                  <div id="decode-filename" class="file-name-display"></div>
+                  <input type="file" id="decode-image" accept="image/png">
+              </label>
+              <button class="btn-primary" style="width:100%" id="btn-decode">Reveal Secret</button>
+              <div id="decode-output"></div>
+          </div>
+      </div>
+<!-- 🔥 DESKTOP VISION SECTION START -->
+      <div class="lab-vision-desktop">
+          <div class="vision-box">
+              <h4>01. Anti-Algorithm</h4>
+              <p>We build tools for creators, not for machines. Hide your true message from scrapers and bots. Your art, your rebellion.</p>
+          </div>
+          <div class="vision-box">
+              <h4>02. Absolute Privacy</h4>
+              <p>Zero servers. Zero tracking. The Paradox Steganography engine processes everything securely and entirely on your local device.</p>
+          </div>
+          <div class="vision-box">
+              <h4>03. The CJP Movement</h4>
+              <p>Refuse to be polished. Refuse to be quiet. This lab serves as the official underground communication network for the unheard.</p>
+          </div>
+      </div>
+  </main>
+
+  <canvas id="stego-canvas"></canvas>
+
+  <!-- =============================================
+       SCRIPTS
+       ============================================= -->
+  <!-- Ensure navbar JS works on this page too -->
+  <script src="js/ui.js" type="module"></script>
+  
+  <script>
+      // ==========================================
+      // ADVANCED LSB STEGANOGRAPHY ENGINE
+      // WITH REAL-TIME PREMIUM UI FEEDBACK
+      // ==========================================
+      const EOF_MARKER = '$$EOF$$'; 
+      const canvas = document.getElementById('stego-canvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+      const encodeInput = document.getElementById('encode-image');
+      const decodeInput = document.getElementById('decode-image');
+      
+      // Filename update listeners
+      encodeInput.addEventListener('change', (e) => {
+          if(e.target.files[0]) document.getElementById('encode-filename').innerText = e.target.files[0].name;
+      });
+      decodeInput.addEventListener('change', (e) => {
+          if(e.target.files[0]) document.getElementById('decode-filename').innerText = e.target.files[0].name;
+      });
+
+      function textToBinary(text) {
+          let binary = [];
+          text += EOF_MARKER; 
+          for (let i = 0; i < text.length; i++) {
+              let charBin = text.charCodeAt(i).toString(2).padStart(8, '0');
+              for (let j = 0; j < 8; j++) {
+                  binary.push(parseInt(charBin[j]));
+              }
+          }
+          return binary;
+      }
+
+      // 🔥 Premium Progress Animation Engine
+      function simulateProgress(btn, actionText, heavyTaskCallback) {
+          let originalContent = btn.innerHTML;
+          btn.disabled = true;
+          btn.classList.add('lab-btn-loading');
+          
+          // Button ke andar progress bar aur naya text inject karna
+          btn.innerHTML = `
+              <div class="lab-btn-progress-bar"></div>
+              <div class="lab-btn-progress-wrapper">
+                  ${actionText} <span class="pct-text">[ 0% ]</span>
+              </div>
+          `;
+          
+          let progressBar = btn.querySelector('.lab-btn-progress-bar');
+          let pctText = btn.querySelector('.pct-text');
+          let progress = 0;
+          
+          // Smooth filling animation
+          let interval = setInterval(() => {
+              progress += Math.floor(Math.random() * 8) + 2; 
+              
+              if (progress >= 95) {
+                  progress = 95;
+                  clearInterval(interval);
+                  pctText.innerText = '[ 95% ]';
+                  progressBar.style.width = '95%';
+
+                  // Hold at 95%, then execute heavy task
+                  setTimeout(() => {
+                      heavyTaskCallback(); 
+                      
+                      pctText.innerText = '[ 100% ]';
+                      progressBar.style.width = '100%';
+                      
+                      // Complete animation
+                      setTimeout(() => {
+                          btn.disabled = false;
+                          btn.classList.remove('lab-btn-loading');
+                          btn.innerHTML = originalContent;
+                      }, 800); 
+                  }, 50);
+              } else {
+                  pctText.innerText = `[ ${progress}% ]`;
+                  progressBar.style.width = `${progress}%`;
+              }
+          }, 40);
+      }
+
+
+      // ==========================================
+      // ENCODE LOGIC
+      // ==========================================
+      document.getElementById('btn-encode').addEventListener('click', function() {
+          const file = encodeInput.files[0];
+          const text = document.getElementById('encode-text').value;
+          const btn = this;
+
+          if (!file) return alert("Please select an image first.");
+          if (!text) return alert("Please enter a secret message.");
+
+          const reader = new FileReader();
+          reader.onload = (event) => {
+              const img = new Image();
+              img.onload = () => {
+                  
+                  // Image loaded in memory, now trigger the smooth animation
+                  simulateProgress(btn, "ENCODING", () => {
+                      canvas.width = img.width;
+                      canvas.height = img.height;
+                      ctx.drawImage(img, 0, 0);
+
+                      let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                      let data = imgData.data;
+                      let binaryMsg = textToBinary(text);
+
+                      let maxBits = (canvas.width * canvas.height) * 3;
+                      if (binaryMsg.length > maxBits) {
+                          alert("Image is too small to hold this much text! Use a larger image.");
+                          return;
+                      }
+
+                      let msgIndex = 0;
+                      for (let i = 0; i < data.length && msgIndex < binaryMsg.length; i++) {
+                          if ((i + 1) % 4 === 0) continue; 
+                          data[i] = (data[i] & 254) | binaryMsg[msgIndex];
+                          msgIndex++;
+                      }
+
+                      ctx.putImageData(imgData, 0, 0);
+
+                      const downloadLink = document.getElementById('download-link');
+                      downloadLink.href = canvas.toDataURL("image/png");
+                      downloadLink.download = "paradox-encoded.png";
+                      downloadLink.click();
+                  });
+
+              };
+              img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+      });
+
+      // ==========================================
+      // DECODE LOGIC
+      // ==========================================
+      document.getElementById('btn-decode').addEventListener('click', function() {
+          const file = decodeInput.files[0];
+          const outputBox = document.getElementById('decode-output');
+          const btn = this;
+          
+          if (!file) return alert("Please select an encoded image first.");
+
+          const reader = new FileReader();
+          reader.onload = (event) => {
+              const img = new Image();
+              img.onload = () => {
+                  
+                  // Trigger smooth animation
+                  simulateProgress(btn, "DECODING", () => {
+                      canvas.width = img.width;
+                      canvas.height = img.height;
+                      ctx.drawImage(img, 0, 0);
+
+                      let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                      let data = imgData.data;
+                      
+                      let binaryStr = "";
+                      let decodedText = "";
+
+                      for (let i = 0; i < data.length; i++) {
+                          if ((i + 1) % 4 === 0) continue; 
+                          binaryStr += (data[i] & 1).toString(); 
+
+                          if (binaryStr.length === 8) {
+                              let charCode = parseInt(binaryStr, 2);
+                              decodedText += String.fromCharCode(charCode);
+                              binaryStr = "";
+
+                              if (decodedText.endsWith(EOF_MARKER)) {
+                                  decodedText = decodedText.slice(0, -EOF_MARKER.length);
+                                  outputBox.innerText = decodedText;
+                                  outputBox.style.display = 'block';
+                                  return; // Stop processing once found
+                              }
+                          }
+                      }
+                      outputBox.innerText = "No hidden message found, or the image was compressed/corrupted.";
+                      outputBox.style.display = 'block';
+                  });
+
+              };
+              img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+      });
+  </script>
+</body>
+</html>
