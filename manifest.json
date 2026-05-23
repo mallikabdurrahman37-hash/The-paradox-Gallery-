@@ -2,11 +2,15 @@
   "name": "The Paradox Gallery",
   "short_name": "Paradox",
   "description": "Where Cringe Becomes Art. A curated digital space for rebellious creators.",
-  "start_url": "https://mallikabdurrahman37-hash.github.io/The-paradox-Gallery-/index.html",
+
+  "start_url": "/The-paradox-Gallery-/index.html",
+  "scope": "/The-paradox-Gallery-/",
+
   "display": "standalone",
   "background_color": "#F9F8F5",
   "theme_color": "#1A1A1A",
   "orientation": "portrait",
+
   "icons": [
     {
       "src": "assets/logo.png",
