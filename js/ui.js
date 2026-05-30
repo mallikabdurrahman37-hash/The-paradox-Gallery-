@@ -124,87 +124,106 @@ function showToast(message, type = 'default') {
   }, 3200);
 }
 
-// ----------------------------------------------------------
-// CANVAS WATERMARKING ENGINE
-// Downloads artwork with The Paradox Gallery watermark overlay
-// ----------------------------------------------------------
-async function downloadWithWatermark(imageUrl, artworkTitle, artistUsername) {
-  showToast('Preparing watermarked download…');
+// ==============================================
+// ADVANCED DYNAMIC WATERMARK ENGINE (Part of js/ui.js)
+// Fixed Overlap and Real-Time Contrast Control
+// ==============================================
 
-  try {
-    // Load image via proxy-friendly fetch to canvas
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
+async function downloadWithWatermark(originalImageUrl, artworkTitle) {
+    // 1. established branding colors
+    const CREAM = "#F9F8F5";
+    const INK = "#1A1A1A";
+    const RUST = "#C84B31";
+    const WATERMARK_TEXT = `The Paradox Gallery - CJP // ${artworkTitle}`;
 
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-      // Add cache-busting + crossorigin workaround for Cloudinary
-      img.src = imageUrl.includes('?') ? imageUrl : imageUrl + '?crossorigin=1';
+    // Show established smooth loading UI on the button (Part of Master Logic)
+    const activeBtn = document.querySelector('.btn-artwork-download'); // Ensure correct class
+    if (activeBtn) simulateProgress(activeBtn, "DOWNLOADING", () => {}); // Just for UI feel
+
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "Anonymous"; // Crucial for Firestore URLs
+
+        img.onload = () => {
+            const originalW = img.width;
+            const originalH = img.height;
+            const barHeight = 80; // The new dedicated curator bar at bottom
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            // Set new larger dimensions (H + barHeight)
+            canvas.width = originalW;
+            canvas.height = originalH + barHeight;
+
+            // --- Dynamic Contrast Analysis Start ---
+            // Calculate pixel brightness to choose best theme
+            let totalLuminance = 0;
+            let sampleCount = 0;
+            ctx.drawImage(img, 0, 0, originalW, originalH);
+            const imageData = ctx.getImageData(0, 0, originalW, originalH).data;
+
+            // Sample every 20th pixel to save Main Thread blocking
+            for (let i = 0; i < imageData.length; i += 80) {
+                const r = imageData[i];
+                const g = imageData[i+1];
+                const b = imageData[i+2];
+                // W3C standard formula for perceived luminance
+                const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
+                totalLuminance += luminance;
+                sampleCount++;
+            }
+            const avgLuminance = totalLuminance / sampleCount;
+
+            // Define bar themes
+            let barTheme = {};
+            // Threshold 128 is mid-way between 0 (black) and 255 (white)
+            if (avgLuminance > 140) { 
+                // Image is mostly light/minimalist.
+                // Apply 'Heavy Subsurface' theme: Black bar, Cream text.
+                barTheme = { bg: INK, text: CREAM };
+            } else {
+                // Image is mostly dark/heavy.
+                // Apply 'Curator Premium' theme: Cream bar, Rust Orange text.
+                barTheme = { bg: CREAM, text: RUST };
+            }
+            // --- Dynamic Contrast Analysis End ---
+
+            // Draw final curated border and original image
+            ctx.fillStyle = barTheme.bg; // Fill the entire canvas with base color
+            ctx.fillRect(0, 0, canvas.width, canvas.height); 
+            
+            ctx.drawImage(img, 0, 0); // Draw original image on top section
+
+            // Add professional typography (using Playfair Display - from previous context)
+            ctx.fillStyle = barTheme.text;
+            ctx.font = "italic 600 28px 'Playfair Display', serif"; // Large luxury font
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.letterSpacing = "2px"; // Brutalist touch
+
+            // Text ke piche koi sasta shadow nahi, sirf direct professional contrast bar
+            const textX = originalW / 2;
+            const textY = originalH + (barHeight / 2);
+            ctx.fillText(WATERMARK_TEXT, textX, textY);
+
+            // Trigger premium lossless download (PNG is REQUIRED for steganography compatibility)
+            const downloadLink = document.createElement("a");
+            const safeTitle = artworkTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            downloadLink.href = canvas.toDataURL("image/png", 1.0);
+            downloadLink.download = `paradox-art_${safeTitle}.png`;
+            downloadLink.click();
+
+            resolve();
+        };
+
+        img.onerror = () => {
+            reject(new Error("Image download failed. Ensure CORS is active on Firestore storage."));
+            if (activeBtn) activeBtn.classList.remove('lab-btn-loading'); // Reset UI
+        };
+
+        img.src = originalImageUrl;
     });
-
-    // Create off-screen canvas at native image dimensions
-    const canvas = document.createElement('canvas');
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    const ctx = canvas.getContext('2d');
-
-    // Draw original image
-    ctx.drawImage(img, 0, 0);
-
-    // --- WATERMARK OVERLAY ---
-    const W = canvas.width;
-    const H = canvas.height;
-    const footerHeight = 150;
-
-    // Gradient block across footer
-    const gradient = ctx.createLinearGradient(0, H - footerHeight, 0, H);
-    gradient.addColorStop(0, 'rgba(0,0,0,0)');
-    gradient.addColorStop(1, 'rgba(0,0,0,0.75)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, H - footerHeight, W, footerHeight);
-
-    // Text Line 1: "THE PARADOX GALLERY"
-    const fontSize1 = Math.round(W * 0.04);
-    ctx.font = `500 ${fontSize1}px 'Playfair Display', Georgia, serif`;
-    ctx.fillStyle = 'rgba(255,255,255,0.92)';
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'bottom';
-    const line1Y = H - Math.round(footerHeight * 0.22);
-    const paddingRight = Math.round(W * 0.03);
-    ctx.fillText('THE PARADOX GALLERY', W - paddingRight, line1Y);
-
-    // Text Line 2: "Artwork by @username"
-    const fontSize2 = Math.round(W * 0.025);
-    ctx.font = `300 ${fontSize2}px 'Inter', -apple-system, sans-serif`;
-    ctx.fillStyle = 'rgba(255,255,255,0.65)';
-    const username = artistUsername ? `@${artistUsername}` : 'Unknown Artist';
-    const line2Y = H - Math.round(footerHeight * 0.06);
-    ctx.fillText(`Artwork by ${username}`, W - paddingRight, line2Y);
-
-    // Generate high-quality JPEG download
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
-    const anchor = document.createElement('a');
-    const safeTitle = (artworkTitle || 'artwork').replace(/[^a-z0-9]/gi, '-').toLowerCase();
-    anchor.href = dataUrl;
-    anchor.download = `paradox-gallery-${safeTitle}.jpg`;
-    anchor.click();
-
-    showToast('Downloaded successfully!', 'success');
-  } catch (err) {
-    console.error('Watermark download error:', err);
-    // Fallback: attempt direct download without watermark
-    try {
-      const anchor = document.createElement('a');
-      anchor.href = imageUrl;
-      anchor.download = `${artworkTitle || 'artwork'}.jpg`;
-      anchor.target = '_blank';
-      anchor.click();
-      showToast('Downloaded (without watermark — CORS restriction)', 'default');
-    } catch (fallbackErr) {
-      showToast('Download failed. Please try again.', 'error');
-    }
-  }
 }
 
 // ----------------------------------------------------------
